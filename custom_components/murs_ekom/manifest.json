@@ -4,9 +4,9 @@
   "codeowners": ["@vrsho"],
   "config_flow": true,
   "documentation": "https://murs-ekom.hr/",
-  "issue_tracker": "https://github.com/vrsho/murs-ekom-odvoz-smeca/issues",
+  "integration_type": "service",
   "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/vrsho/murs-ekom-odvoz-smeca/issues",
   "requirements": [],
-  "version": "1.2.3",
-  "integration_type": "service"
+  "version": "1.2.4"
 }
