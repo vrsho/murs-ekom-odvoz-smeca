@@ -7,6 +7,6 @@
   "issue_tracker": "https://github.com/vrsho/murs-ekom-odvoz-smeca/issues",
   "iot_class": "cloud_polling",
   "requirements": [],
-  "version": "1.2.2",
+  "version": "1.2.3",
   "integration_type": "service"
 }
