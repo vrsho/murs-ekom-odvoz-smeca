@@ -1,0 +1,480 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//MURS-EKOM//Odvoz smeća 2026//HR
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Odvoz smeća — Naselja Hlapičina i Štrukovec
+X-WR-TIMEZONE:Europe/Zagreb
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-01-09@murs-ekom
+DTSTART;VALUE=DATE:20260109
+DTEND;VALUE=DATE:20260110
+SUMMARY:Miješani komunalni otpad, Bio otpad, Božićna drvca
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-01-13@murs-ekom
+DTSTART;VALUE=DATE:20260113
+DTEND;VALUE=DATE:20260114
+SUMMARY:Plastika i papir
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-01-16@murs-ekom
+DTSTART;VALUE=DATE:20260116
+DTEND;VALUE=DATE:20260117
+SUMMARY:Metal, Tetrapak i staklo
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-01-20@murs-ekom
+DTSTART;VALUE=DATE:20260120
+DTEND;VALUE=DATE:20260121
+SUMMARY:Miješani komunalni otpad, Bio otpad, Božićna drvca
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-02-03@murs-ekom
+DTSTART;VALUE=DATE:20260203
+DTEND;VALUE=DATE:20260204
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-02-10@murs-ekom
+DTSTART;VALUE=DATE:20260210
+DTEND;VALUE=DATE:20260211
+SUMMARY:Plastika i papir
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-02-13@murs-ekom
+DTSTART;VALUE=DATE:20260213
+DTEND;VALUE=DATE:20260214
+SUMMARY:Metal, Tetrapak i staklo
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-02-17@murs-ekom
+DTSTART;VALUE=DATE:20260217
+DTEND;VALUE=DATE:20260218
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-02-25@murs-ekom
+DTSTART;VALUE=DATE:20260225
+DTEND;VALUE=DATE:20260226
+SUMMARY:Glomazni otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro. Glomazni otpad prijavite na 040/543-314 najkasnije 2 dana prije.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-03-03@murs-ekom
+DTSTART;VALUE=DATE:20260303
+DTEND;VALUE=DATE:20260304
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-03-10@murs-ekom
+DTSTART;VALUE=DATE:20260310
+DTEND;VALUE=DATE:20260311
+SUMMARY:Plastika i papir
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-03-13@murs-ekom
+DTSTART;VALUE=DATE:20260313
+DTEND;VALUE=DATE:20260314
+SUMMARY:Metal, Tetrapak i staklo
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-03-17@murs-ekom
+DTSTART;VALUE=DATE:20260317
+DTEND;VALUE=DATE:20260318
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-03-18@murs-ekom
+DTSTART;VALUE=DATE:20260318
+DTEND;VALUE=DATE:20260319
+SUMMARY:Granje
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-03-31@murs-ekom
+DTSTART;VALUE=DATE:20260331
+DTEND;VALUE=DATE:20260401
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-04-07@murs-ekom
+DTSTART;VALUE=DATE:20260407
+DTEND;VALUE=DATE:20260408
+SUMMARY:Plastika i papir
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-04-10@murs-ekom
+DTSTART;VALUE=DATE:20260410
+DTEND;VALUE=DATE:20260411
+SUMMARY:Metal, Tetrapak i staklo
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-04-14@murs-ekom
+DTSTART;VALUE=DATE:20260414
+DTEND;VALUE=DATE:20260415
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-04-22@murs-ekom
+DTSTART;VALUE=DATE:20260422
+DTEND;VALUE=DATE:20260423
+SUMMARY:Glomazni otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro. Glomazni otpad prijavite na 040/543-314 najkasnije 2 dana prije.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-04-28@murs-ekom
+DTSTART;VALUE=DATE:20260428
+DTEND;VALUE=DATE:20260429
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-05-05@murs-ekom
+DTSTART;VALUE=DATE:20260505
+DTEND;VALUE=DATE:20260506
+SUMMARY:Plastika i papir
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-05-08@murs-ekom
+DTSTART;VALUE=DATE:20260508
+DTEND;VALUE=DATE:20260509
+SUMMARY:Metal, Tetrapak i staklo
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-05-12@murs-ekom
+DTSTART;VALUE=DATE:20260512
+DTEND;VALUE=DATE:20260513
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-05-26@murs-ekom
+DTSTART;VALUE=DATE:20260526
+DTEND;VALUE=DATE:20260527
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-06-02@murs-ekom
+DTSTART;VALUE=DATE:20260602
+DTEND;VALUE=DATE:20260603
+SUMMARY:Plastika i papir
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-06-05@murs-ekom
+DTSTART;VALUE=DATE:20260605
+DTEND;VALUE=DATE:20260606
+SUMMARY:Metal, Tetrapak i staklo
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-06-09@murs-ekom
+DTSTART;VALUE=DATE:20260609
+DTEND;VALUE=DATE:20260610
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-06-17@murs-ekom
+DTSTART;VALUE=DATE:20260617
+DTEND;VALUE=DATE:20260618
+SUMMARY:Glomazni otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro. Glomazni otpad prijavite na 040/543-314 najkasnije 2 dana prije.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-06-23@murs-ekom
+DTSTART;VALUE=DATE:20260623
+DTEND;VALUE=DATE:20260624
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-06-30@murs-ekom
+DTSTART;VALUE=DATE:20260630
+DTEND;VALUE=DATE:20260701
+SUMMARY:Plastika i papir
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-07-03@murs-ekom
+DTSTART;VALUE=DATE:20260703
+DTEND;VALUE=DATE:20260704
+SUMMARY:Metal, Tetrapak i staklo
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-07-07@murs-ekom
+DTSTART;VALUE=DATE:20260707
+DTEND;VALUE=DATE:20260708
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-07-21@murs-ekom
+DTSTART;VALUE=DATE:20260721
+DTEND;VALUE=DATE:20260722
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-07-28@murs-ekom
+DTSTART;VALUE=DATE:20260728
+DTEND;VALUE=DATE:20260729
+SUMMARY:Plastika i papir
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-07-31@murs-ekom
+DTSTART;VALUE=DATE:20260731
+DTEND;VALUE=DATE:20260801
+SUMMARY:Metal, Tetrapak i staklo
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-08-04@murs-ekom
+DTSTART;VALUE=DATE:20260804
+DTEND;VALUE=DATE:20260805
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-08-12@murs-ekom
+DTSTART;VALUE=DATE:20260812
+DTEND;VALUE=DATE:20260813
+SUMMARY:Glomazni otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro. Glomazni otpad prijavite na 040/543-314 najkasnije 2 dana prije.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-08-18@murs-ekom
+DTSTART;VALUE=DATE:20260818
+DTEND;VALUE=DATE:20260819
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-08-25@murs-ekom
+DTSTART;VALUE=DATE:20260825
+DTEND;VALUE=DATE:20260826
+SUMMARY:Plastika i papir
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-08-28@murs-ekom
+DTSTART;VALUE=DATE:20260828
+DTEND;VALUE=DATE:20260829
+SUMMARY:Metal, Tetrapak i staklo
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-09-01@murs-ekom
+DTSTART;VALUE=DATE:20260901
+DTEND;VALUE=DATE:20260902
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-09-15@murs-ekom
+DTSTART;VALUE=DATE:20260915
+DTEND;VALUE=DATE:20260916
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-09-22@murs-ekom
+DTSTART;VALUE=DATE:20260922
+DTEND;VALUE=DATE:20260923
+SUMMARY:Plastika i papir
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-09-25@murs-ekom
+DTSTART;VALUE=DATE:20260925
+DTEND;VALUE=DATE:20260926
+SUMMARY:Metal, Tetrapak i staklo
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-09-29@murs-ekom
+DTSTART;VALUE=DATE:20260929
+DTEND;VALUE=DATE:20260930
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-10-07@murs-ekom
+DTSTART;VALUE=DATE:20261007
+DTEND;VALUE=DATE:20261008
+SUMMARY:Glomazni otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro. Glomazni otpad prijavite na 040/543-314 najkasnije 2 dana prije.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-10-13@murs-ekom
+DTSTART;VALUE=DATE:20261013
+DTEND;VALUE=DATE:20261014
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-10-20@murs-ekom
+DTSTART;VALUE=DATE:20261020
+DTEND;VALUE=DATE:20261021
+SUMMARY:Plastika i papir
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-10-23@murs-ekom
+DTSTART;VALUE=DATE:20261023
+DTEND;VALUE=DATE:20261024
+SUMMARY:Metal, Tetrapak i staklo
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-10-27@murs-ekom
+DTSTART;VALUE=DATE:20261027
+DTEND;VALUE=DATE:20261028
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-11-10@murs-ekom
+DTSTART;VALUE=DATE:20261110
+DTEND;VALUE=DATE:20261111
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-11-17@murs-ekom
+DTSTART;VALUE=DATE:20261117
+DTEND;VALUE=DATE:20261118
+SUMMARY:Plastika i papir
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-11-20@murs-ekom
+DTSTART;VALUE=DATE:20261120
+DTEND;VALUE=DATE:20261121
+SUMMARY:Metal, Tetrapak i staklo
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-11-24@murs-ekom
+DTSTART;VALUE=DATE:20261124
+DTEND;VALUE=DATE:20261125
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-12-02@murs-ekom
+DTSTART;VALUE=DATE:20261202
+DTEND;VALUE=DATE:20261203
+SUMMARY:Granje
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-12-08@murs-ekom
+DTSTART;VALUE=DATE:20261208
+DTEND;VALUE=DATE:20261209
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-12-15@murs-ekom
+DTSTART;VALUE=DATE:20261215
+DTEND;VALUE=DATE:20261216
+SUMMARY:Plastika i papir
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-12-18@murs-ekom
+DTSTART;VALUE=DATE:20261218
+DTEND;VALUE=DATE:20261219
+SUMMARY:Metal, Tetrapak i staklo
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+BEGIN:VEVENT
+UID:hlapicina_strukovec-2026-12-22@murs-ekom
+DTSTART;VALUE=DATE:20261222
+DTEND;VALUE=DATE:20261223
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Naselja Hlapičina i Štrukovec
+END:VEVENT
+END:VCALENDAR

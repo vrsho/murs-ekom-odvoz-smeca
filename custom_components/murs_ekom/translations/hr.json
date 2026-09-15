@@ -1,0 +1,98 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "MURS-EKOM odvoz smeća",
+        "description": "Autor: Vrsho (info@vrsho.com)."
+      },
+      "settings": {
+        "title": "MURS-EKOM odvoz smeća",
+        "description": "Odaberi naselje. Kalendar se povlači jednom tjedno, ili odmah gumbom Osvježi kalendar.",
+        "data": {
+          "location": "Naselje",
+          "pull_interval_days": "Razmak povlačenja (dana)",
+          "refresh_now": "Povuci kalendar sada",
+          "notify_enabled": "Uključi obavijesti",
+          "notify_days_before": "Dana prije odvoza",
+          "notify_time": "Vrijeme obavijesti",
+          "notify_entities": "Uređaji za obavijest"
+        },
+        "data_description": {
+          "location": "Naselje za koje vrijedi kalendar odvoza.",
+          "pull_interval_days": "1 = svaki dan, 7 = jednom tjedno.",
+          "refresh_now": "Odmah povuci najnoviji kalendar pri spremanju.",
+          "notify_days_before": "0 = isti dan, 1 = dan ranije.",
+          "notify_entities": "Notify entitete Companion aplikacije, npr. notify.mobile_app_telefon."
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "Integracija je već dodana.",
+      "no_locations": "Popis naselja nije dostupan."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "MURS-EKOM postavke",
+        "description": "Promijeni naselje, tjedno povlačenje ili obavijesti. Možeš i pritisnuti gumb Osvježi kalendar na uređaju.",
+        "data": {
+          "location": "Naselje",
+          "pull_interval_days": "Razmak povlačenja (dana)",
+          "refresh_now": "Povuci kalendar sada",
+          "notify_enabled": "Uključi obavijesti",
+          "notify_days_before": "Dana prije odvoza",
+          "notify_time": "Vrijeme obavijesti",
+          "notify_entities": "Uređaji za obavijest"
+        },
+        "data_description": {
+          "pull_interval_days": "Zadano je 7 dana (jednom tjedno).",
+          "refresh_now": "Uključi da se kalendar odmah povuče nakon spremanja."
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "next_collection": { "name": "Sljedeći odvoz" },
+      "mixed": { "name": "Miješani komunalni otpad" },
+      "bio": { "name": "Bio otpad" },
+      "plastic_paper": { "name": "Plastika i papir" },
+      "metal_glass": { "name": "Metal, Tetrapak i staklo" },
+      "bulky": { "name": "Glomazni otpad" },
+      "branches": { "name": "Granje" },
+      "christmas_trees": { "name": "Božićna drvca" }
+    },
+    "binary_sensor": {
+      "collection_today": { "name": "Odvoz danas" }
+    },
+    "calendar": {
+      "calendar": { "name": "Kalendar odvoza" }
+    },
+    "button": {
+      "refresh": { "name": "Osvježi kalendar" }
+    }
+  },
+  "services": {
+    "test_obavijest": {
+      "name": "Testiraj obavijest",
+      "description": "Pošalji testnu obavijest odvoza.",
+      "fields": {
+        "entry_id": {
+          "name": "ID unosa",
+          "description": "Neobavezno."
+        }
+      }
+    },
+    "osvjezi": {
+      "name": "Osvježi kalendar",
+      "description": "Odmah povuci najnoviji kalendar odvoza.",
+      "fields": {
+        "entry_id": {
+          "name": "ID unosa",
+          "description": "Neobavezno."
+        }
+      }
+    }
+  }
+}

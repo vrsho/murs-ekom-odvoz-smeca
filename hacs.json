@@ -1,0 +1,6 @@
+{
+  "name": "MURS-EKOM Odvoz smeća",
+  "render_readme": true,
+  "country": ["HR"],
+  "homeassistant": "2024.6.0"
+}

@@ -1,0 +1,472 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//MURS-EKOM//Odvoz smeća 2026//HR
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Odvoz smeća — Grad Mursko Središće
+X-WR-TIMEZONE:Europe/Zagreb
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-01-07@murs-ekom
+DTSTART;VALUE=DATE:20260107
+DTEND;VALUE=DATE:20260108
+SUMMARY:Miješani komunalni otpad, Bio otpad, Božićna drvca
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-01-13@murs-ekom
+DTSTART;VALUE=DATE:20260113
+DTEND;VALUE=DATE:20260114
+SUMMARY:Plastika i papir
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-01-16@murs-ekom
+DTSTART;VALUE=DATE:20260116
+DTEND;VALUE=DATE:20260117
+SUMMARY:Metal, Tetrapak i staklo
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-01-21@murs-ekom
+DTSTART;VALUE=DATE:20260121
+DTEND;VALUE=DATE:20260122
+SUMMARY:Miješani komunalni otpad, Bio otpad, Božićna drvca
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-02-04@murs-ekom
+DTSTART;VALUE=DATE:20260204
+DTEND;VALUE=DATE:20260205
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-02-10@murs-ekom
+DTSTART;VALUE=DATE:20260210
+DTEND;VALUE=DATE:20260211
+SUMMARY:Plastika i papir
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-02-13@murs-ekom
+DTSTART;VALUE=DATE:20260213
+DTEND;VALUE=DATE:20260214
+SUMMARY:Metal, Tetrapak i staklo
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-02-18@murs-ekom
+DTSTART;VALUE=DATE:20260218
+DTEND;VALUE=DATE:20260219
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-02-25@murs-ekom
+DTSTART;VALUE=DATE:20260225
+DTEND;VALUE=DATE:20260226
+SUMMARY:Glomazni otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro. Glomazni otpad prijavite na 040/543-314 najkasnije 2 dana prije.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-03-04@murs-ekom
+DTSTART;VALUE=DATE:20260304
+DTEND;VALUE=DATE:20260305
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-03-10@murs-ekom
+DTSTART;VALUE=DATE:20260310
+DTEND;VALUE=DATE:20260311
+SUMMARY:Plastika i papir
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-03-13@murs-ekom
+DTSTART;VALUE=DATE:20260313
+DTEND;VALUE=DATE:20260314
+SUMMARY:Metal, Tetrapak i staklo
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-03-18@murs-ekom
+DTSTART;VALUE=DATE:20260318
+DTEND;VALUE=DATE:20260319
+SUMMARY:Miješani komunalni otpad, Bio otpad, Granje
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-04-01@murs-ekom
+DTSTART;VALUE=DATE:20260401
+DTEND;VALUE=DATE:20260402
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-04-07@murs-ekom
+DTSTART;VALUE=DATE:20260407
+DTEND;VALUE=DATE:20260408
+SUMMARY:Plastika i papir
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-04-10@murs-ekom
+DTSTART;VALUE=DATE:20260410
+DTEND;VALUE=DATE:20260411
+SUMMARY:Metal, Tetrapak i staklo
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-04-15@murs-ekom
+DTSTART;VALUE=DATE:20260415
+DTEND;VALUE=DATE:20260416
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-04-22@murs-ekom
+DTSTART;VALUE=DATE:20260422
+DTEND;VALUE=DATE:20260423
+SUMMARY:Glomazni otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro. Glomazni otpad prijavite na 040/543-314 najkasnije 2 dana prije.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-04-29@murs-ekom
+DTSTART;VALUE=DATE:20260429
+DTEND;VALUE=DATE:20260430
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-05-05@murs-ekom
+DTSTART;VALUE=DATE:20260505
+DTEND;VALUE=DATE:20260506
+SUMMARY:Plastika i papir
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-05-08@murs-ekom
+DTSTART;VALUE=DATE:20260508
+DTEND;VALUE=DATE:20260509
+SUMMARY:Metal, Tetrapak i staklo
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-05-13@murs-ekom
+DTSTART;VALUE=DATE:20260513
+DTEND;VALUE=DATE:20260514
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-05-27@murs-ekom
+DTSTART;VALUE=DATE:20260527
+DTEND;VALUE=DATE:20260528
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-06-02@murs-ekom
+DTSTART;VALUE=DATE:20260602
+DTEND;VALUE=DATE:20260603
+SUMMARY:Plastika i papir
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-06-05@murs-ekom
+DTSTART;VALUE=DATE:20260605
+DTEND;VALUE=DATE:20260606
+SUMMARY:Metal, Tetrapak i staklo
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-06-10@murs-ekom
+DTSTART;VALUE=DATE:20260610
+DTEND;VALUE=DATE:20260611
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-06-17@murs-ekom
+DTSTART;VALUE=DATE:20260617
+DTEND;VALUE=DATE:20260618
+SUMMARY:Glomazni otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro. Glomazni otpad prijavite na 040/543-314 najkasnije 2 dana prije.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-06-24@murs-ekom
+DTSTART;VALUE=DATE:20260624
+DTEND;VALUE=DATE:20260625
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-06-30@murs-ekom
+DTSTART;VALUE=DATE:20260630
+DTEND;VALUE=DATE:20260701
+SUMMARY:Plastika i papir
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-07-03@murs-ekom
+DTSTART;VALUE=DATE:20260703
+DTEND;VALUE=DATE:20260704
+SUMMARY:Metal, Tetrapak i staklo
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-07-08@murs-ekom
+DTSTART;VALUE=DATE:20260708
+DTEND;VALUE=DATE:20260709
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-07-22@murs-ekom
+DTSTART;VALUE=DATE:20260722
+DTEND;VALUE=DATE:20260723
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-07-28@murs-ekom
+DTSTART;VALUE=DATE:20260728
+DTEND;VALUE=DATE:20260729
+SUMMARY:Plastika i papir
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-07-31@murs-ekom
+DTSTART;VALUE=DATE:20260731
+DTEND;VALUE=DATE:20260801
+SUMMARY:Metal, Tetrapak i staklo
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-08-07@murs-ekom
+DTSTART;VALUE=DATE:20260807
+DTEND;VALUE=DATE:20260808
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-08-12@murs-ekom
+DTSTART;VALUE=DATE:20260812
+DTEND;VALUE=DATE:20260813
+SUMMARY:Glomazni otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro. Glomazni otpad prijavite na 040/543-314 najkasnije 2 dana prije.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-08-19@murs-ekom
+DTSTART;VALUE=DATE:20260819
+DTEND;VALUE=DATE:20260820
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-08-25@murs-ekom
+DTSTART;VALUE=DATE:20260825
+DTEND;VALUE=DATE:20260826
+SUMMARY:Plastika i papir
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-08-28@murs-ekom
+DTSTART;VALUE=DATE:20260828
+DTEND;VALUE=DATE:20260829
+SUMMARY:Metal, Tetrapak i staklo
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-09-02@murs-ekom
+DTSTART;VALUE=DATE:20260902
+DTEND;VALUE=DATE:20260903
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-09-16@murs-ekom
+DTSTART;VALUE=DATE:20260916
+DTEND;VALUE=DATE:20260917
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-09-22@murs-ekom
+DTSTART;VALUE=DATE:20260922
+DTEND;VALUE=DATE:20260923
+SUMMARY:Plastika i papir
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-09-25@murs-ekom
+DTSTART;VALUE=DATE:20260925
+DTEND;VALUE=DATE:20260926
+SUMMARY:Metal, Tetrapak i staklo
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-09-30@murs-ekom
+DTSTART;VALUE=DATE:20260930
+DTEND;VALUE=DATE:20261001
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-10-07@murs-ekom
+DTSTART;VALUE=DATE:20261007
+DTEND;VALUE=DATE:20261008
+SUMMARY:Glomazni otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro. Glomazni otpad prijavite na 040/543-314 najkasnije 2 dana prije.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-10-14@murs-ekom
+DTSTART;VALUE=DATE:20261014
+DTEND;VALUE=DATE:20261015
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-10-20@murs-ekom
+DTSTART;VALUE=DATE:20261020
+DTEND;VALUE=DATE:20261021
+SUMMARY:Plastika i papir
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-10-23@murs-ekom
+DTSTART;VALUE=DATE:20261023
+DTEND;VALUE=DATE:20261024
+SUMMARY:Metal, Tetrapak i staklo
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-10-28@murs-ekom
+DTSTART;VALUE=DATE:20261028
+DTEND;VALUE=DATE:20261029
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-11-11@murs-ekom
+DTSTART;VALUE=DATE:20261111
+DTEND;VALUE=DATE:20261112
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-11-17@murs-ekom
+DTSTART;VALUE=DATE:20261117
+DTEND;VALUE=DATE:20261118
+SUMMARY:Plastika i papir
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-11-20@murs-ekom
+DTSTART;VALUE=DATE:20261120
+DTEND;VALUE=DATE:20261121
+SUMMARY:Metal, Tetrapak i staklo
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-11-25@murs-ekom
+DTSTART;VALUE=DATE:20261125
+DTEND;VALUE=DATE:20261126
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-12-02@murs-ekom
+DTSTART;VALUE=DATE:20261202
+DTEND;VALUE=DATE:20261203
+SUMMARY:Granje
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-12-09@murs-ekom
+DTSTART;VALUE=DATE:20261209
+DTEND;VALUE=DATE:20261210
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-12-15@murs-ekom
+DTSTART;VALUE=DATE:20261215
+DTEND;VALUE=DATE:20261216
+SUMMARY:Plastika i papir
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-12-18@murs-ekom
+DTSTART;VALUE=DATE:20261218
+DTEND;VALUE=DATE:20261219
+SUMMARY:Metal, Tetrapak i staklo
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+BEGIN:VEVENT
+UID:grad_mursko_sredisce-2026-12-23@murs-ekom
+DTSTART;VALUE=DATE:20261223
+DTEND;VALUE=DATE:20261224
+SUMMARY:Miješani komunalni otpad, Bio otpad
+DESCRIPTION:Spremnik iznesite do 6:00 ujutro.
+LOCATION:Grad Mursko Središće
+END:VEVENT
+END:VCALENDAR

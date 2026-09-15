@@ -1,0 +1,22 @@
+test_obavijest:
+  name: Testiraj obavijest
+  description: Pošalji testnu notifikaciju odvoza na odabrane uređaje.
+  fields:
+    entry_id:
+      name: ID unosa
+      description: Neobavezno. Ostavi prazno da se pošalje za sve lokacije.
+      example: 01ABCDEF
+      required: false
+      selector:
+        text:
+
+osvjezi:
+  name: Osvježi kalendar
+  description: Odmah povuci najnoviji kalendar odvoza.
+  fields:
+    entry_id:
+      name: ID unosa
+      description: Neobavezno.
+      required: false
+      selector:
+        text:

@@ -1,0 +1,24 @@
+# ID-ovi entiteta ovise o jeziku Home Assistanta.
+# U UI-ju: Uređaji → Odvoz smeća → kopiraj točne entity_id vrijednosti.
+title: Odvoz smeća
+views:
+  - title: Odvoz
+    path: odvoz
+    icon: mdi:trash-can
+    cards:
+      - type: markdown
+        content: >
+          Spremnike iznesite **do 6:00** na dan odvoza.
+      - type: entities
+        title: Sljedeći odvoz
+        entities:
+          - entity: sensor.odvoz_smeca_grad_mursko_sredisce_sljedeci_odvoz
+          - entity: binary_sensor.odvoz_smeca_grad_mursko_sredisce_odvoz_danas
+          - entity: sensor.odvoz_smeca_grad_mursko_sredisce_bio_otpad
+          - entity: sensor.odvoz_smeca_grad_mursko_sredisce_mijesani_komunalni_otpad
+          - entity: sensor.odvoz_smeca_grad_mursko_sredisce_plastika_i_papir
+          - entity: sensor.odvoz_smeca_grad_mursko_sredisce_metal_tetrapak_i_staklo
+      - type: calendar
+        entities:
+          - calendar.odvoz_smeca_grad_mursko_sredisce_kalendar_odvoza
+        initial_view: dayGridMonth

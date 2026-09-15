@@ -1,0 +1,98 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "MURS-EKOM waste collection",
+        "description": "Author: Vrsho (info@vrsho.com)."
+      },
+      "settings": {
+        "title": "MURS-EKOM waste collection",
+        "description": "Choose a settlement. The calendar is pulled once a week, or immediately with the Refresh calendar button.",
+        "data": {
+          "location": "Settlement",
+          "pull_interval_days": "Pull interval (days)",
+          "refresh_now": "Pull calendar now",
+          "notify_enabled": "Enable notifications",
+          "notify_days_before": "Days before collection",
+          "notify_time": "Notification time",
+          "notify_entities": "Notify devices"
+        },
+        "data_description": {
+          "location": "Settlement for this collection calendar.",
+          "pull_interval_days": "1 = daily, 7 = once a week.",
+          "refresh_now": "Pull the latest calendar immediately when saving.",
+          "notify_days_before": "0 = same day, 1 = the day before.",
+          "notify_entities": "Companion app notify entities, e.g. notify.mobile_app_phone."
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "The integration is already configured.",
+      "no_locations": "Settlement list is unavailable."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "MURS-EKOM settings",
+        "description": "Change settlement, weekly pull, or notifications. You can also press Refresh calendar on the device.",
+        "data": {
+          "location": "Settlement",
+          "pull_interval_days": "Pull interval (days)",
+          "refresh_now": "Pull calendar now",
+          "notify_enabled": "Enable notifications",
+          "notify_days_before": "Days before collection",
+          "notify_time": "Notification time",
+          "notify_entities": "Notify devices"
+        },
+        "data_description": {
+          "pull_interval_days": "Default is 7 days (once a week).",
+          "refresh_now": "Enable to pull the calendar immediately after save."
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "next_collection": { "name": "Next collection" },
+      "mixed": { "name": "Mixed waste" },
+      "bio": { "name": "Bio waste" },
+      "plastic_paper": { "name": "Plastic and paper" },
+      "metal_glass": { "name": "Metal, Tetrapak and glass" },
+      "bulky": { "name": "Bulky waste" },
+      "branches": { "name": "Branches" },
+      "christmas_trees": { "name": "Christmas trees" }
+    },
+    "binary_sensor": {
+      "collection_today": { "name": "Collection today" }
+    },
+    "calendar": {
+      "calendar": { "name": "Collection calendar" }
+    },
+    "button": {
+      "refresh": { "name": "Refresh calendar" }
+    }
+  },
+  "services": {
+    "test_obavijest": {
+      "name": "Test notification",
+      "description": "Send a test waste-collection notification.",
+      "fields": {
+        "entry_id": {
+          "name": "Config entry ID",
+          "description": "Optional."
+        }
+      }
+    },
+    "osvjezi": {
+      "name": "Refresh calendar",
+      "description": "Pull the latest collection calendar now.",
+      "fields": {
+        "entry_id": {
+          "name": "Config entry ID",
+          "description": "Optional."
+        }
+      }
+    }
+  }
+}
