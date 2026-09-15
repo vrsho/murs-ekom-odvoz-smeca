@@ -1,7 +1,7 @@
 {
   "domain": "murs_ekom",
   "name": "MURS-EKOM Odvoz smeća",
-  "codeowners": ["@Vrsho"],
+  "codeowners": ["@vrsho"],
   "config_flow": true,
   "documentation": "https://murs-ekom.hr/",
   "issue_tracker": "https://github.com/vrsho/murs-ekom-odvoz-smeca/issues",
