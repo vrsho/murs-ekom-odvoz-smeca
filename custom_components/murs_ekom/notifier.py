@@ -23,8 +23,9 @@ from .const import (
     STORAGE_VERSION,
 )
 from .coordinator import MursEkomCoordinator
+from .i18n import format_date, when_text
 from .schedule import (
-    format_date_hr,
+    days_until,
     notify_target_date,
     parse_time,
 )
@@ -32,17 +33,25 @@ from .schedule import (
 _LOGGER = logging.getLogger(__name__)
 
 
-def _notification_payload(item, when: str, location: str) -> tuple[str, str, str]:
-    title = f"Odvoz smeća {when.lower()}"
+def _payload(coordinator: MursEkomCoordinator, item, days_before: int | None = None) -> tuple[str, str, str]:
+    today = dt_util.now().date()
+    days = days_before if days_before is not None else days_until(item, today)
+    when = when_text(coordinator.language, days)
+    title = coordinator.text("notify_title", when=when.lower())
     lines = [
-        f"{when} ({format_date_hr(item.date)}) odvoze: {item.label}.",
-        "Spremnik iznesite do 6:00 ujutro.",
+        coordinator.text(
+            "notify_body",
+            when=when,
+            date=format_date(item.date),
+            types=coordinator.types_label(item.types),
+        ),
+        coordinator.text("prepare"),
     ]
     if "bulky" in item.types:
-        lines.append("Glomazni otpad prijavite na 040/543-314 najkasnije 2 dana prije.")
+        lines.append(coordinator.text("bulky_note"))
     if "branches" in item.types:
-        lines.append("Granje ostavite ispred kuće na dan odvoza.")
-    lines.append(location)
+        lines.append(coordinator.text("branches_note"))
+    lines.append(coordinator.location_title)
     return title, "\n".join(lines), item.icon
 
 
@@ -130,10 +139,8 @@ class MursEkomNotifier:
         if not force and self._sent.get("last_key") == key:
             return False
 
-        when = "Danas" if days_before == 0 else "Sutra" if days_before == 1 else f"Za {days_before} dana"
-        title, message, icon = _notification_payload(
-            item, when, self.coordinator.location_title
-        )
+        when_days = days_before
+        title, message, icon = _payload(self.coordinator, item, when_days)
         await self._async_deliver(title, message, icon, entities)
         self._sent = {"last_key": key}
         await self._store.async_save(self._sent)
@@ -143,16 +150,12 @@ class MursEkomNotifier:
         item = self.coordinator.data.get("next")
         entities = self.entry.options.get(CONF_NOTIFY_ENTITIES, []) or []
         if item is None:
-            title = "Odvoz smeća"
-            message = "Testna obavijest. Trenutačno nema predstojećeg termina u kalendaru."
+            title = self.coordinator.text("device_name")
+            message = self.coordinator.text("notify_empty")
             icon = "mdi:trash-can"
         else:
-            title, message, icon = _notification_payload(
-                item,
-                "Sutra" if item.date != dt_util.now().date() else "Danas",
-                self.coordinator.location_title,
-            )
-            message = f"TEST\n{message}"
+            title, message, icon = _payload(self.coordinator, item)
+            message = f"{self.coordinator.text('notify_test')}\n{message}"
         await self._async_deliver(title, message, icon, entities)
 
     async def _async_deliver(
@@ -168,7 +171,7 @@ class MursEkomNotifier:
             "data": {
                 "notification_icon": icon,
                 "tag": "murs-ekom-odvoz",
-                "channel": "Odvoz smeća",
+                "channel": self.coordinator.text("device_name"),
                 "color": "#2E7D32",
                 "importance": "default",
                 "push": {"sound": "default"},

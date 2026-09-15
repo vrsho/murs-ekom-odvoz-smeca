@@ -10,6 +10,7 @@
         "description": "Odaberi naselje. Kalendar se povlači jednom tjedno, ili odmah gumbom Osvježi kalendar.",
         "data": {
           "location": "Naselje",
+          "language": "Jezik",
           "pull_interval_days": "Razmak povlačenja (dana)",
           "refresh_now": "Povuci kalendar sada",
           "notify_enabled": "Uključi obavijesti",
@@ -19,6 +20,7 @@
         },
         "data_description": {
           "location": "Naselje za koje vrijedi kalendar odvoza.",
+          "language": "System prati jezik Home Assistanta. HR i EN vrijede za senzore, kalendar i obavijesti.",
           "pull_interval_days": "1 = svaki dan, 7 = jednom tjedno.",
           "refresh_now": "Odmah povuci najnoviji kalendar pri spremanju.",
           "notify_days_before": "0 = isti dan, 1 = dan ranije.",
@@ -38,6 +40,7 @@
         "description": "Promijeni naselje, tjedno povlačenje ili obavijesti. Možeš i pritisnuti gumb Osvježi kalendar na uređaju.",
         "data": {
           "location": "Naselje",
+          "language": "Jezik",
           "pull_interval_days": "Razmak povlačenja (dana)",
           "refresh_now": "Povuci kalendar sada",
           "notify_enabled": "Uključi obavijesti",
@@ -47,6 +50,7 @@
         },
         "data_description": {
           "pull_interval_days": "Zadano je 7 dana (jednom tjedno).",
+          "language": "System prati jezik Home Assistanta.",
           "refresh_now": "Uključi da se kalendar odmah povuče nakon spremanja."
         }
       }

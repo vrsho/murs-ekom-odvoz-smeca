@@ -22,8 +22,18 @@ WASTE_TYPES: dict[str, dict[str, str]] = {
         "icon": "mdi:recycle",
         "color": "#F9A825",
     },
+    "plastic": {
+        "name": "Plastika",
+        "icon": "mdi:recycle",
+        "color": "#F9A825",
+    },
+    "paper": {
+        "name": "Papir",
+        "icon": "mdi:newspaper-variant-outline",
+        "color": "#2196F3",
+    },
     "metal_glass": {
-        "name": "Metal, Tetrapak i staklo",
+        "name": "Metal, Tetrapak, Staklena ambalaža",
         "icon": "mdi:bottle-wine",
         "color": "#2E7D32",
     },

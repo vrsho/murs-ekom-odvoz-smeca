@@ -25,7 +25,6 @@ async def async_setup_entry(
 
 class RefreshCalendarButton(CoordinatorEntity[MursEkomCoordinator], ButtonEntity):
     _attr_has_entity_name = True
-    _attr_translation_key = "refresh"
     _attr_icon = "mdi:cloud-download"
     _attr_entity_category = EntityCategory.CONFIG
     _attr_attribution = ATTRIBUTION
@@ -34,6 +33,10 @@ class RefreshCalendarButton(CoordinatorEntity[MursEkomCoordinator], ButtonEntity
         super().__init__(coordinator)
         self._attr_unique_id = f"{coordinator.entry.entry_id}_refresh"
         self._attr_device_info = _device(coordinator)
+
+    @property
+    def name(self) -> str:
+        return self.coordinator.text("refresh")
 
     async def async_press(self) -> None:
         await self.coordinator.async_refresh_remote()

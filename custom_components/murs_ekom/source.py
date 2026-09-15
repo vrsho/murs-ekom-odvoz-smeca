@@ -10,7 +10,7 @@ from urllib.parse import urljoin
 
 ARCHIVE_URL = "https://muralist.hr/kalendar-odvoza/"
 API_URL = "https://muralist.hr/wp-json/wp/v2/kalendar_odvoza"
-USER_AGENT = "MURS-EKOM-HA/1.1 (Vrsho; info@vrsho.com)"
+USER_AGENT = "MURS-EKOM-HA/1.2 (Vrsho; info@vrsho.com)"
 
 WASTE_LABELS: dict[str, str] = {
     "bio otpad": "bio",

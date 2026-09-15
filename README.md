@@ -8,7 +8,7 @@ Prikazuje **kad se što odvozi** i šalje **obavijest s ikonom kante** u satima 
 
 ## Što dobiješ
 
-- izbor **naselja** u postavkama
+- izbor **naselja** i **jezika** (System / HR / EN) u postavkama
 - automatsko **povlačenje kalendara** (zadano jednom tjedno)
 - gumb **Osvježi kalendar** za ručni pull
 - senzor **Sljedeći odvoz**
@@ -27,7 +27,7 @@ Vrste otpada: miješani komunalni, bio, plastika i papir, metal/tetrapak/staklo,
 
 2. Restartaj Home Assistant.
 3. **Postavke → Uređaji i usluge → Dodaj integraciju** → **MURS-EKOM Odvoz smeća**.
-4. Odaberi **naselje**.
+4. Odaberi **naselje** i **jezik** (zadano System = jezik Home Assistanta).
 5. Postavi obavijesti:
    - **Dana prije odvoza:** `1` (dan ranije) ili `0` (na dan odvoza)
    - **Vrijeme:** npr. `18:00:00`

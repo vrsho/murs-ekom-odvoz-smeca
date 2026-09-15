@@ -25,22 +25,23 @@ async def async_setup_entry(
     async_add_entities([MursEkomCalendar(coordinator)])
 
 
-def _event_for(item: Collection, location: str) -> CalendarEvent:
-    note = "Spremnik iznesite do 6:00 ujutro."
+def _event_for(coordinator: MursEkomCoordinator, item: Collection) -> CalendarEvent:
+    note = coordinator.text("prepare")
     if "bulky" in item.types:
-        note += " Glomazni otpad prijavite na 040/543-314 najkasnije 2 dana prije."
+        note += " " + coordinator.text("bulky_note")
+    if "branches" in item.types:
+        note += " " + coordinator.text("branches_note")
     return CalendarEvent(
         start=item.date,
         end=item.date + timedelta(days=1),
-        summary=item.label,
+        summary=coordinator.types_label(item.types),
         description=note,
-        location=location,
+        location=coordinator.location_title,
     )
 
 
 class MursEkomCalendar(CoordinatorEntity[MursEkomCoordinator], CalendarEntity):
     _attr_has_entity_name = True
-    _attr_translation_key = "calendar"
     _attr_icon = "mdi:trash-can"
     _attr_attribution = ATTRIBUTION
     _attr_initial_color = "#2E7D32"
@@ -51,13 +52,17 @@ class MursEkomCalendar(CoordinatorEntity[MursEkomCoordinator], CalendarEntity):
         self._attr_device_info = _device(coordinator)
 
     @property
+    def name(self) -> str:
+        return self.coordinator.text("calendar")
+
+    @property
     def event(self) -> CalendarEvent | None:
         item = self.coordinator.data.get("next") or self.coordinator.data.get(
             "today_item"
         )
         if item is None:
             return None
-        return _event_for(item, self.coordinator.location_title)
+        return _event_for(self.coordinator, item)
 
     async def async_get_events(
         self,
@@ -67,10 +72,9 @@ class MursEkomCalendar(CoordinatorEntity[MursEkomCoordinator], CalendarEntity):
     ) -> list[CalendarEvent]:
         start = start_date.date()
         end = end_date.date()
-        location = self.coordinator.location_title
         events: list[CalendarEvent] = []
         for item in self.coordinator.data.get("all", []):
             if item.date < start or item.date >= end:
                 continue
-            events.append(_event_for(item, location))
+            events.append(_event_for(self.coordinator, item))
         return events

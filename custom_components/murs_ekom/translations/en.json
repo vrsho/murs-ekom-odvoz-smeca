@@ -10,6 +10,7 @@
         "description": "Choose a settlement. The calendar is pulled once a week, or immediately with the Refresh calendar button.",
         "data": {
           "location": "Settlement",
+          "language": "Language",
           "pull_interval_days": "Pull interval (days)",
           "refresh_now": "Pull calendar now",
           "notify_enabled": "Enable notifications",
@@ -19,6 +20,7 @@
         },
         "data_description": {
           "location": "Settlement for this collection calendar.",
+          "language": "System follows Home Assistant language. HR and EN apply to sensors, calendar and notifications.",
           "pull_interval_days": "1 = daily, 7 = once a week.",
           "refresh_now": "Pull the latest calendar immediately when saving.",
           "notify_days_before": "0 = same day, 1 = the day before.",
@@ -38,6 +40,7 @@
         "description": "Change settlement, weekly pull, or notifications. You can also press Refresh calendar on the device.",
         "data": {
           "location": "Settlement",
+          "language": "Language",
           "pull_interval_days": "Pull interval (days)",
           "refresh_now": "Pull calendar now",
           "notify_enabled": "Enable notifications",
@@ -47,6 +50,7 @@
         },
         "data_description": {
           "pull_interval_days": "Default is 7 days (once a week).",
+          "language": "System follows Home Assistant language.",
           "refresh_now": "Enable to pull the calendar immediately after save."
         }
       }
@@ -55,7 +59,7 @@
   "entity": {
     "sensor": {
       "next_collection": { "name": "Next collection" },
-      "mixed": { "name": "Mixed waste" },
+      "mixed": { "name": "Mixed municipal waste" },
       "bio": { "name": "Bio waste" },
       "plastic_paper": { "name": "Plastic and paper" },
       "metal_glass": { "name": "Metal, Tetrapak and glass" },

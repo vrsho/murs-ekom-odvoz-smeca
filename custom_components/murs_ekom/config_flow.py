@@ -24,6 +24,7 @@ from homeassistant.helpers.selector import (
 )
 
 from .const import (
+    CONF_LANGUAGE,
     CONF_LOCATION,
     CONF_NOTIFY_DAYS_BEFORE,
     CONF_NOTIFY_ENABLED,
@@ -31,11 +32,15 @@ from .const import (
     CONF_NOTIFY_TIME,
     CONF_PULL_INTERVAL_DAYS,
     CONF_REFRESH_NOW,
+    DEFAULT_LANGUAGE,
     DEFAULT_NOTIFY_DAYS_BEFORE,
     DEFAULT_NOTIFY_ENABLED,
     DEFAULT_NOTIFY_TIME,
     DEFAULT_PULL_INTERVAL_DAYS,
     DOMAIN,
+    LANG_EN,
+    LANG_HR,
+    LANG_SYSTEM,
 )
 from .source import API_URL, USER_AGENT, fallback_locations, parse_locations
 
@@ -66,6 +71,19 @@ def _options_schema(
         ] = _location_selector(locations)
     schema.update(
         {
+            vol.Required(
+                CONF_LANGUAGE,
+                default=defaults.get(CONF_LANGUAGE, DEFAULT_LANGUAGE),
+            ): SelectSelector(
+                SelectSelectorConfig(
+                    options=[
+                        {"value": LANG_SYSTEM, "label": "System / Sustav"},
+                        {"value": LANG_HR, "label": "Hrvatski"},
+                        {"value": LANG_EN, "label": "English"},
+                    ],
+                    mode=SelectSelectorMode.DROPDOWN,
+                )
+            ),
             vol.Required(
                 CONF_PULL_INTERVAL_DAYS,
                 default=defaults.get(
@@ -169,6 +187,7 @@ class MursEkomConfigFlow(ConfigFlow, domain=DOMAIN):
                 data={CONF_LOCATION: location},
                 options={
                     CONF_LOCATION: location,
+                    CONF_LANGUAGE: user_input.get(CONF_LANGUAGE, DEFAULT_LANGUAGE),
                     CONF_PULL_INTERVAL_DAYS: int(
                         user_input[CONF_PULL_INTERVAL_DAYS]
                     ),
@@ -210,6 +229,7 @@ class MursEkomOptionsFlow(OptionsFlow):
             )
             options = {
                 CONF_LOCATION: location,
+                CONF_LANGUAGE: user_input.get(CONF_LANGUAGE, DEFAULT_LANGUAGE),
                 CONF_PULL_INTERVAL_DAYS: int(user_input[CONF_PULL_INTERVAL_DAYS]),
                 CONF_NOTIFY_ENABLED: bool(user_input[CONF_NOTIFY_ENABLED]),
                 CONF_NOTIFY_DAYS_BEFORE: int(user_input[CONF_NOTIFY_DAYS_BEFORE]),

@@ -11,15 +11,16 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import ATTRIBUTION, DOMAIN
 from .coordinator import MursEkomCoordinator
-from .schedule import TYPE_ORDER, WASTE_TYPES, days_until, format_date_hr, when_label
+from .i18n import format_date, when_text
+from .schedule import TYPE_ORDER, WASTE_TYPES, days_until
 
 
 def _device(coordinator: MursEkomCoordinator) -> DeviceInfo:
     return DeviceInfo(
         identifiers={(DOMAIN, coordinator.entry.entry_id)},
-        name=f"Odvoz smeća ({coordinator.location_title})",
+        name=f"{coordinator.text('device_name')} ({coordinator.location_title})",
         manufacturer="MURS-EKOM d.o.o.",
-        model="Kalendar odvoza",
+        model=coordinator.text("calendar"),
         configuration_url=coordinator.source_url,
     )
 
@@ -39,7 +40,6 @@ async def async_setup_entry(
 
 class NextCollectionSensor(CoordinatorEntity[MursEkomCoordinator], SensorEntity):
     _attr_has_entity_name = True
-    _attr_translation_key = "next_collection"
     _attr_icon = "mdi:trash-can"
     _attr_attribution = ATTRIBUTION
 
@@ -49,11 +49,16 @@ class NextCollectionSensor(CoordinatorEntity[MursEkomCoordinator], SensorEntity)
         self._attr_device_info = _device(coordinator)
 
     @property
-    def native_value(self) -> str | None:
-        item = self.coordinator.data.get("next")
+    def name(self) -> str:
+        return self.coordinator.text("next_collection")
+
+    @property
+    def native_value(self) -> str:
+        data = self.coordinator.data or {}
+        item = data.get("next")
         if item is None:
-            return None
-        return item.label
+            return self.coordinator.text("no_upcoming")
+        return self.coordinator.types_label(item.types)
 
     @property
     def icon(self) -> str:
@@ -65,25 +70,25 @@ class NextCollectionSensor(CoordinatorEntity[MursEkomCoordinator], SensorEntity)
         data = self.coordinator.data
         item = data.get("next")
         today = data["today"]
+        lang = self.coordinator.language
         if item is None:
             return {
                 "days_until": None,
-                "when": "Nema termina",
+                "when": when_text(lang, None),
                 "location": self.coordinator.location_title,
                 "last_pull": data.get("last_pull"),
-                "source": data.get("source"),
             }
+        days = days_until(item, today)
         return {
             "date": item.date.isoformat(),
-            "date_hr": format_date_hr(item.date),
-            "days_until": days_until(item, today),
-            "when": when_label(item, today),
+            "date_label": format_date(item.date),
+            "days_until": days,
+            "when": when_text(lang, days),
             "types": list(item.types),
-            "types_hr": item.labels,
+            "types_label": self.coordinator.types_label(item.types),
             "location": self.coordinator.location_title,
             "prepare_by": "06:00",
             "last_pull": data.get("last_pull"),
-            "source": data.get("source"),
             "pull_days": data.get("pull_days"),
         }
 
@@ -98,7 +103,6 @@ class WasteTypeSensor(CoordinatorEntity[MursEkomCoordinator], SensorEntity):
         self._waste_type = waste_type
         self.entity_description = SensorEntityDescription(
             key=waste_type,
-            translation_key=waste_type,
             icon=info["icon"],
         )
         self._attr_unique_id = f"{coordinator.entry.entry_id}_{waste_type}"
@@ -106,24 +110,38 @@ class WasteTypeSensor(CoordinatorEntity[MursEkomCoordinator], SensorEntity):
         self._attr_icon = info["icon"]
 
     @property
-    def native_value(self) -> str | None:
-        item = self.coordinator.data["per_type"].get(self._waste_type)
-        if item is None:
-            return None
-        today = self.coordinator.data["today"]
-        return when_label(item, today)
+    def name(self) -> str:
+        return self.coordinator.waste_label(self._waste_type)
+
+    @property
+    def native_value(self) -> str:
+        data = self.coordinator.data or {}
+        item = (data.get("per_type") or {}).get(self._waste_type)
+        last = (data.get("last_type") or {}).get(self._waste_type)
+        today = data.get("today")
+        days = days_until(item, today) if today is not None else None
+        last_date = last.date if last is not None else None
+        return when_text(self.coordinator.language, days, last_date)
 
     @property
     def extra_state_attributes(self) -> dict:
         item = self.coordinator.data["per_type"].get(self._waste_type)
+        last = self.coordinator.data.get("last_type", {}).get(self._waste_type)
         today = self.coordinator.data["today"]
-        if item is None:
-            return {"days_until": None}
-        return {
-            "date": item.date.isoformat(),
-            "date_hr": format_date_hr(item.date),
-            "days_until": days_until(item, today),
-            "also_collected": [
-                WASTE_TYPES[t]["name"] for t in item.types if t != self._waste_type
-            ],
-        }
+        attrs: dict = {"days_until": days_until(item, today)}
+        if item is not None:
+            attrs.update(
+                {
+                    "date": item.date.isoformat(),
+                    "date_label": format_date(item.date),
+                    "also_collected": [
+                        self.coordinator.waste_label(t)
+                        for t in item.types
+                        if t != self._waste_type
+                    ],
+                }
+            )
+        if last is not None:
+            attrs["last_date"] = last.date.isoformat()
+            attrs["last_date_label"] = format_date(last.date)
+        return attrs

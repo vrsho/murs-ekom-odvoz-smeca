@@ -19,6 +19,7 @@ from .const import (
     DEFAULT_PULL_INTERVAL_DAYS,
     DOMAIN,
 )
+from .i18n import collection_label, resolve_language, text as i18n_text, waste_name
 from .source import (
     ARCHIVE_URL,
     API_URL,
@@ -32,6 +33,7 @@ from .schedule import (
     Collection,
     collection_on_from,
     collections_from_events,
+    last_from,
     next_from,
     recycle_yard_info,
     upcoming_from,
@@ -75,6 +77,19 @@ class MursEkomCoordinator(DataUpdateCoordinator[dict]):
             if item["id"] == self.location_id:
                 return item["name"]
         return self.location_id
+
+    @property
+    def language(self) -> str:
+        return resolve_language(self.hass, self.entry)
+
+    def text(self, key: str, **kwargs) -> str:
+        return i18n_text(self.language, key, **kwargs)
+
+    def waste_label(self, waste_type: str) -> str:
+        return waste_name(self.language, waste_type)
+
+    def types_label(self, types) -> str:
+        return collection_label(self.language, types)
 
     @property
     def source_url(self) -> str:
@@ -188,6 +203,18 @@ class MursEkomCoordinator(DataUpdateCoordinator[dict]):
             waste_type: next_from(items, today, waste_type=waste_type)
             for waste_type in TYPE_ORDER
         }
+        last_type: dict[str, Collection | None] = {
+            waste_type: last_from(items, today, waste_type=waste_type)
+            for waste_type in TYPE_ORDER
+        }
+        bundled = fallback_calendar(self.location_id)
+        if bundled and bundled.get("events"):
+            bundled_items = collections_from_events(bundled["events"])
+            for waste_type in TYPE_ORDER:
+                if last_type[waste_type] is None:
+                    last_type[waste_type] = last_from(
+                        bundled_items, today, waste_type=waste_type
+                    )
         return {
             "today": today,
             "next": next_from(items, today),
@@ -195,6 +222,7 @@ class MursEkomCoordinator(DataUpdateCoordinator[dict]):
             "upcoming": upcoming_from(items, today),
             "all": items,
             "per_type": per_type,
+            "last_type": last_type,
             "yard": recycle_yard_info(),
             "last_pull": self._calendar.get("fetched_at") if self._calendar else None,
             "source": self._calendar.get("source") if self._calendar else None,

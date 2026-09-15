@@ -24,7 +24,6 @@ async def async_setup_entry(
 
 class CollectionTodaySensor(CoordinatorEntity[MursEkomCoordinator], BinarySensorEntity):
     _attr_has_entity_name = True
-    _attr_translation_key = "collection_today"
     _attr_icon = "mdi:trash-can"
     _attr_attribution = ATTRIBUTION
 
@@ -34,6 +33,10 @@ class CollectionTodaySensor(CoordinatorEntity[MursEkomCoordinator], BinarySensor
         self._attr_device_info = _device(coordinator)
 
     @property
+    def name(self) -> str:
+        return self.coordinator.text("collection_today")
+
+    @property
     def is_on(self) -> bool:
         return self.coordinator.data.get("today_item") is not None
 
@@ -41,9 +44,9 @@ class CollectionTodaySensor(CoordinatorEntity[MursEkomCoordinator], BinarySensor
     def extra_state_attributes(self) -> dict:
         item = self.coordinator.data.get("today_item")
         if item is None:
-            return {"types_hr": []}
+            return {"types_label": []}
         return {
             "types": list(item.types),
-            "types_hr": item.labels,
+            "types_label": self.coordinator.types_label(item.types),
             "prepare_by": "06:00",
         }

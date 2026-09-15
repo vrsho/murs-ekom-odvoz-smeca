@@ -19,8 +19,10 @@ from murs_ekom.schedule import (  # noqa: E402
     WASTE_TYPES,
     collection_on,
     collections_for,
+    last_from,
     location_choices,
     next_collection,
+    next_from,
     notify_target_date,
     when_label,
 )
@@ -70,6 +72,15 @@ def test_christmas_trees_with_bio() -> None:
     assert item is not None
     assert "christmas_trees" in item.types
     assert "bio" in item.types
+
+
+def test_christmas_trees_last_after_january() -> None:
+    today = date(2026, 9, 15)
+    items = collections_for("grad_mursko_sredisce")
+    assert next_from(items, today, waste_type="christmas_trees") is None
+    last = last_from(items, today, waste_type="christmas_trees")
+    assert last is not None
+    assert last.date == date(2026, 1, 21)
 
 
 def test_bulky_and_branches() -> None:
@@ -122,6 +133,7 @@ if __name__ == "__main__":
         test_grad_next_from_15_september,
         test_notify_day_before_matches_tomorrow_collection,
         test_christmas_trees_with_bio,
+        test_christmas_trees_last_after_january,
         test_bulky_and_branches,
         test_sorted_and_complete,
         test_parse_calendar_html,

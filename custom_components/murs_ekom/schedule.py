@@ -141,6 +141,18 @@ def collection_on_from(items: list[Collection], day: date) -> Collection | None:
     return None
 
 
+def last_from(
+    items: list[Collection],
+    today: date,
+    *,
+    waste_type: str | None = None,
+) -> Collection | None:
+    past = [item for item in items if item.date < today]
+    if waste_type:
+        past = [item for item in past if item.includes(waste_type)]
+    return past[-1] if past else None
+
+
 def days_until(item: Collection | None, today: date) -> int | None:
     if item is None:
         return None
