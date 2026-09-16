@@ -64,31 +64,34 @@ def find_todo_entity(hass: HomeAssistant) -> str | None:
 
 async def async_ensure_todo_list(hass: HomeAssistant, language: str) -> str | None:
     wanted = list_name_for(language)
-    entity_id = await _async_rename_or_create(hass, wanted)
-    if entity_id:
-        return entity_id
-    await _async_wait_ready(hass)
-    return find_todo_entity(hass)
-
-
-async def _async_rename_or_create(hass: HomeAssistant, wanted: str) -> str | None:
     existing = next(_managed_entries(hass), None)
-    if existing is not None:
-        current = str(existing.data.get(_LIST_NAME_KEY) or existing.title or "")
-        if current != wanted:
-            hass.config_entries.async_update_entry(
-                existing,
-                title=wanted,
-                data={**existing.data, _LIST_NAME_KEY: wanted},
-            )
-            try:
-                await hass.config_entries.async_reload(existing.entry_id)
-            except Exception as err:  # noqa: BLE001
-                _LOGGER.debug("Reload liste %s: %s", wanted, err)
-            await hass.async_block_till_done()
-        await _async_wait_ready(hass)
-        return find_todo_entity(hass)
+    if existing is None:
+        await _async_create_list(hass, wanted)
+    else:
+        await _async_maybe_rename(hass, existing, wanted)
+    await _async_wait_ready(hass)
+    entity_id = find_todo_entity(hass)
+    if entity_id is None:
+        _LOGGER.warning("Lista %s je uključena, ali entitet još nije dostupan", wanted)
+    return entity_id
 
+
+async def _async_maybe_rename(hass: HomeAssistant, entry, wanted: str) -> None:
+    current = str(entry.data.get(_LIST_NAME_KEY) or entry.title or "")
+    if current == wanted:
+        return
+    hass.config_entries.async_update_entry(
+        entry,
+        title=wanted,
+        data={**entry.data, _LIST_NAME_KEY: wanted},
+    )
+    try:
+        await hass.config_entries.async_reload(entry.entry_id)
+    except Exception as err:  # noqa: BLE001
+        _LOGGER.debug("Reload liste %s: %s", wanted, err)
+
+
+async def _async_create_list(hass: HomeAssistant, wanted: str) -> None:
     try:
         await hass.config_entries.flow.async_init(
             _LOCAL_TODO,
@@ -97,18 +100,10 @@ async def _async_rename_or_create(hass: HomeAssistant, wanted: str) -> str | Non
         )
     except Exception as err:  # noqa: BLE001
         _LOGGER.warning("Lista %s nije stvorena: %s", wanted, err)
-        return find_todo_entity(hass)
-
-    await hass.async_block_till_done()
-    await _async_wait_ready(hass)
-    entity_id = find_todo_entity(hass)
-    if entity_id is None:
-        _LOGGER.warning("Lista %s je uključena, ali entitet još nije dostupan", wanted)
-    return entity_id
 
 
 async def _async_wait_ready(hass: HomeAssistant) -> None:
-    for _ in range(40):
+    for _ in range(20):
         if hass.services.has_service("todo", "add_item") and find_todo_entity(hass):
             return
         await asyncio.sleep(0.25)

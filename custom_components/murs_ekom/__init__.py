@@ -47,6 +47,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         async_track_time_change(hass, _midnight, hour=0, minute=0, second=10)
     )
     _async_register_services(hass)
+    notifier.schedule_after_start()
     return True
 
 

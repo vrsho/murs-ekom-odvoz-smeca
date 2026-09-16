@@ -72,6 +72,7 @@ class MursEkomNotifier:
         self.entry = entry
         self.coordinator = coordinator
         self._unsub = None
+        self._after_task = None
         self._store = Store(hass, STORAGE_VERSION, f"{STORAGE_KEY}_{entry.entry_id}")
         self._sent: dict[str, str] = {}
 
@@ -80,6 +81,18 @@ class MursEkomNotifier:
         if isinstance(stored, dict):
             self._sent = stored
         self._schedule()
+
+    def schedule_after_start(self) -> None:
+        create = getattr(self.hass, "async_create_background_task", None)
+        if create:
+            self._after_task = create(
+                self.async_after_start(),
+                name=f"{DOMAIN}_after_start",
+            )
+        else:
+            self._after_task = self.hass.async_create_task(self.async_after_start())
+
+    async def async_after_start(self) -> None:
         if self._todo_enabled():
             try:
                 await async_ensure_todo_list(self.hass, self.coordinator.language)
@@ -112,6 +125,9 @@ class MursEkomNotifier:
         )
 
     async def async_stop(self) -> None:
+        if self._after_task:
+            self._after_task.cancel()
+            self._after_task = None
         if self._unsub:
             self._unsub()
             self._unsub = None

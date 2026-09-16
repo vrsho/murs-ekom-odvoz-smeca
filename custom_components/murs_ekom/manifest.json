@@ -1,7 +1,6 @@
 {
   "domain": "murs_ekom",
   "name": "MURS-EKOM Odvoz smeća",
-  "after_dependencies": ["local_todo"],
   "codeowners": ["@vrsho"],
   "config_flow": true,
   "documentation": "https://murs-ekom.hr/",
@@ -9,5 +8,5 @@
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/vrsho/murs-ekom-odvoz-smeca/issues",
   "requirements": [],
-  "version": "1.2.7"
+  "version": "1.2.8"
 }
