@@ -32,7 +32,7 @@ from .schedule import (
     notify_target_date,
     parse_time,
 )
-from .todo_list import async_add_collection_item, async_ensure_smece_list
+from .todo_list import async_add_collection_item, async_ensure_todo_list
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -82,9 +82,9 @@ class MursEkomNotifier:
         self._schedule()
         if self._todo_enabled():
             try:
-                await async_ensure_smece_list(self.hass)
+                await async_ensure_todo_list(self.hass, self.coordinator.language)
             except Exception:  # noqa: BLE001
-                _LOGGER.exception("To-do lista Smeće nije spremna")
+                _LOGGER.exception("To-do lista nije spremna")
         try:
             await self.async_maybe_send(catch_up=True)
         except Exception:  # noqa: BLE001
@@ -152,19 +152,25 @@ class MursEkomNotifier:
                 return False
 
         key = f"{today.isoformat()}_{item.date.isoformat()}"
-        if not force and self._sent.get("last_key") == key:
+        notify_done = self._sent.get("last_key") == key
+        todo_done = self._sent.get("last_todo_key") == key
+        if not force and notify_done and (not todo_on or todo_done):
             return False
 
         when_days = days_before
         title, message, icon = _payload(self.coordinator, item, when_days)
         delivered = False
-        if notify_on or force:
+        if (notify_on or force) and (force or not notify_done):
             await self._async_deliver(title, message, icon, entities)
+            if not force:
+                self._sent["last_key"] = key
             delivered = True
-        if todo_on:
-            delivered = await self._async_add_todo(item, message) or delivered
+        if todo_on and (force or not todo_done):
+            if await self._async_add_todo(item, message):
+                if not force:
+                    self._sent["last_todo_key"] = key
+                delivered = True
         if delivered and not force:
-            self._sent = {"last_key": key}
             await self._store.async_save(self._sent)
         return delivered
 
@@ -192,6 +198,7 @@ class MursEkomNotifier:
             summary = f"{summary_prefix}: {summary}"
         return await async_add_collection_item(
             self.hass,
+            language=self.coordinator.language,
             summary=summary,
             due_date=item.date.isoformat(),
             description=message,

@@ -1,4 +1,4 @@
-"""To-do lista Smeće za podsjetnike odvoza."""
+"""To-do lista za podsjetnike odvoza."""
 
 from __future__ import annotations
 
@@ -7,107 +7,168 @@ import logging
 
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
+from homeassistant.helpers import entity_registry as er
 
-from .const import TODO_LIST_NAME
+from .i18n import text as i18n_text
 
 _LOGGER = logging.getLogger(__name__)
 
 _LOCAL_TODO = "local_todo"
 _LIST_NAME_KEY = "todo_list_name"
+_STORAGE_KEY = "storage_key"
+_MANAGED_NAMES = frozenset({"smeće", "smece", "waste"})
+_MANAGED_ENTITY_IDS = frozenset({"todo.smece", "todo.smeće", "todo.waste"})
 
 
-def find_smece_entity(hass: HomeAssistant) -> str | None:
-    wanted = TODO_LIST_NAME.casefold()
-    for state in hass.states.async_all("todo"):
-        name = (state.name or "").strip().casefold()
-        if name == wanted or state.entity_id in ("todo.smece", "todo.smeće"):
-            return state.entity_id
+def list_name_for(language: str) -> str:
+    return i18n_text(language, "todo_list_name")
+
+
+def _folded(value: str) -> str:
+    return value.strip().casefold()
+
+
+def _is_managed_name(name: str) -> bool:
+    return _folded(name) in _MANAGED_NAMES
+
+
+def _managed_entries(hass: HomeAssistant):
     for entry in hass.config_entries.async_entries(_LOCAL_TODO):
         name = str(entry.data.get(_LIST_NAME_KEY) or entry.title or "")
-        if name.casefold() != wanted:
-            continue
-        key = str(entry.data.get("storage_key") or "")
-        if key and hass.states.get(f"todo.{key}"):
-            return f"todo.{key}"
+        key = str(entry.data.get(_STORAGE_KEY) or "")
+        if _is_managed_name(name) or key in _MANAGED_NAMES:
+            yield entry
+
+
+def _entity_for_entry(hass: HomeAssistant, entry) -> str | None:
+    registry = er.async_get(hass)
+    for item in er.async_entries_for_config_entry(registry, entry.entry_id):
+        if item.domain == "todo" and not item.disabled:
+            return item.entity_id
+    key = str(entry.data.get(_STORAGE_KEY) or "")
+    if key and hass.states.get(f"todo.{key}"):
+        return f"todo.{key}"
     return None
 
 
-def _has_smece_entry(hass: HomeAssistant) -> bool:
-    wanted = TODO_LIST_NAME.casefold()
-    return any(
-        str(entry.data.get(_LIST_NAME_KEY) or entry.title or "").casefold() == wanted
-        for entry in hass.config_entries.async_entries(_LOCAL_TODO)
-    )
-
-
-async def async_ensure_smece_list(hass: HomeAssistant) -> str | None:
-    existing = find_smece_entity(hass)
-    if existing:
-        return existing
-
-    if not _has_smece_entry(hass):
-        try:
-            result = await hass.config_entries.flow.async_init(
-                _LOCAL_TODO,
-                context={"source": "user"},
-                data={_LIST_NAME_KEY: TODO_LIST_NAME},
-            )
-        except Exception as err:  # noqa: BLE001
-            _LOGGER.warning("Lista %s nije stvorena: %s", TODO_LIST_NAME, err)
-            return find_smece_entity(hass)
-
-        if getattr(result, "type", None) == "abort" or (
-            isinstance(result, dict) and result.get("type") == "abort"
-        ):
-            _LOGGER.debug("Lista %s već postoji ili flow je prekinut", TODO_LIST_NAME)
-
-    for _ in range(20):
-        entity_id = find_smece_entity(hass)
+def find_todo_entity(hass: HomeAssistant) -> str | None:
+    for state in hass.states.async_all("todo"):
+        if state.entity_id in _MANAGED_ENTITY_IDS or _is_managed_name(state.name or ""):
+            return state.entity_id
+    for entry in _managed_entries(hass):
+        entity_id = _entity_for_entry(hass, entry)
         if entity_id:
             return entity_id
-        await asyncio.sleep(0.25)
-    _LOGGER.warning("Lista %s je uključena, ali entitet još nije dostupan", TODO_LIST_NAME)
     return None
+
+
+async def async_ensure_todo_list(hass: HomeAssistant, language: str) -> str | None:
+    wanted = list_name_for(language)
+    entity_id = await _async_rename_or_create(hass, wanted)
+    if entity_id:
+        return entity_id
+    await _async_wait_ready(hass)
+    return find_todo_entity(hass)
+
+
+async def _async_rename_or_create(hass: HomeAssistant, wanted: str) -> str | None:
+    existing = next(_managed_entries(hass), None)
+    if existing is not None:
+        current = str(existing.data.get(_LIST_NAME_KEY) or existing.title or "")
+        if current != wanted:
+            hass.config_entries.async_update_entry(
+                existing,
+                title=wanted,
+                data={**existing.data, _LIST_NAME_KEY: wanted},
+            )
+            try:
+                await hass.config_entries.async_reload(existing.entry_id)
+            except Exception as err:  # noqa: BLE001
+                _LOGGER.debug("Reload liste %s: %s", wanted, err)
+            await hass.async_block_till_done()
+        await _async_wait_ready(hass)
+        return find_todo_entity(hass)
+
+    try:
+        await hass.config_entries.flow.async_init(
+            _LOCAL_TODO,
+            context={"source": "user"},
+            data={_LIST_NAME_KEY: wanted},
+        )
+    except Exception as err:  # noqa: BLE001
+        _LOGGER.warning("Lista %s nije stvorena: %s", wanted, err)
+        return find_todo_entity(hass)
+
+    await hass.async_block_till_done()
+    await _async_wait_ready(hass)
+    entity_id = find_todo_entity(hass)
+    if entity_id is None:
+        _LOGGER.warning("Lista %s je uključena, ali entitet još nije dostupan", wanted)
+    return entity_id
+
+
+async def _async_wait_ready(hass: HomeAssistant) -> None:
+    for _ in range(40):
+        if hass.services.has_service("todo", "add_item") and find_todo_entity(hass):
+            return
+        await asyncio.sleep(0.25)
 
 
 async def async_add_collection_item(
     hass: HomeAssistant,
     *,
+    language: str,
     summary: str,
     due_date: str,
     description: str,
 ) -> bool:
-    entity_id = await async_ensure_smece_list(hass)
-    if entity_id is None:
-        return False
-    if await _already_exists(hass, entity_id, summary, due_date):
-        return True
-    payload = {"item": summary, "due_date": due_date, "description": description}
+    entity_id = None
+    payloads = (
+        {"item": summary, "due_date": due_date, "description": description},
+        {"item": summary, "due_date": due_date},
+        {"item": summary},
+    )
+    for attempt in range(6):
+        entity_id = await async_ensure_todo_list(hass, language)
+        if entity_id is None or not hass.services.has_service("todo", "add_item"):
+            await asyncio.sleep(0.5)
+            continue
+        if await _already_exists(hass, entity_id, summary, due_date):
+            return True
+        payload = payloads[min(attempt, len(payloads) - 1)]
+        if await _async_call_add(hass, entity_id, payload):
+            _LOGGER.info("Dodana stavka na %s: %s", entity_id, summary)
+            return True
+        await asyncio.sleep(0.5)
+    _LOGGER.warning("Stavka na To-do listu nije dodana: %s", summary)
+    return False
+
+
+async def _async_call_add(hass: HomeAssistant, entity_id: str, payload: dict) -> bool:
+    data = {"entity_id": entity_id, **payload}
     try:
         await hass.services.async_call(
             "todo",
             "add_item",
-            payload,
+            data,
             blocking=True,
             target={"entity_id": entity_id},
         )
-        _LOGGER.info("Dodana stavka na %s: %s", entity_id, summary)
         return True
-    except HomeAssistantError as err:
-        _LOGGER.warning("Stavka na To-do listu nije dodana s rokom: %s", err)
-    try:
-        await hass.services.async_call(
-            "todo",
-            "add_item",
-            {"item": summary, "description": description},
-            blocking=True,
-            target={"entity_id": entity_id},
-        )
-        _LOGGER.info("Dodana stavka na %s: %s", entity_id, summary)
-        return True
-    except HomeAssistantError as err:
-        _LOGGER.warning("Stavka na To-do listu nije dodana: %s", err)
-        return False
+    except Exception as err:  # noqa: BLE001
+        _LOGGER.debug("todo.add_item nije uspio na %s: %s", entity_id, err)
+        try:
+            await hass.services.async_call(
+                "todo",
+                "add_item",
+                payload,
+                blocking=True,
+                target={"entity_id": entity_id},
+            )
+            return True
+        except Exception as inner:  # noqa: BLE001
+            _LOGGER.warning("todo.add_item nije uspio: %s", inner)
+            return False
 
 
 async def _already_exists(
@@ -119,7 +180,7 @@ async def _already_exists(
         response = await hass.services.async_call(
             "todo",
             "get_items",
-            {},
+            {"entity_id": entity_id},
             blocking=True,
             return_response=True,
             target={"entity_id": entity_id},
@@ -132,9 +193,9 @@ async def _already_exists(
     for item in items:
         if not isinstance(item, dict):
             continue
-        if str(item.get("summary") or item.get("uid") or "") != summary:
+        if str(item.get("summary") or "") != summary:
             continue
         due = str(item.get("due") or item.get("due_date") or "")
-        if due.startswith(due_date):
+        if not due or due.startswith(due_date):
             return True
     return False

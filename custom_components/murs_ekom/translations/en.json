@@ -26,7 +26,7 @@
           "refresh_now": "Pull the latest calendar immediately when saving.",
           "notify_days_before": "0 = same day, 1 = the day before.",
           "notify_entities": "Companion phone entity, e.g. notify.vanjatest or notify.mobile_app_iphone.",
-          "todo_enabled": "Creates a Smeće list and adds an item at the same reminder time."
+          "todo_enabled": "Creates a Waste or Smeće list based on language and adds an item at the same reminder time."
         }
       }
     },
@@ -56,7 +56,7 @@
           "language": "System follows Home Assistant language.",
           "refresh_now": "Enable to pull the calendar immediately after save.",
           "notify_entities": "Companion phone entity, e.g. notify.vanjatest.",
-          "todo_enabled": "Creates a Smeće list and adds an item at the same reminder time."
+          "todo_enabled": "Creates a Waste or Smeće list based on language and adds an item at the same reminder time."
         }
       }
     }

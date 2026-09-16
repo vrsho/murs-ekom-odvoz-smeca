@@ -26,7 +26,7 @@
           "refresh_now": "Odmah povuci najnoviji kalendar pri spremanju.",
           "notify_days_before": "0 = isti dan, 1 = dan ranije.",
           "notify_entities": "Companion entitet mobitela, npr. notify.vanjatest ili notify.mobile_app_iphone.",
-          "todo_enabled": "Stvara listu Smeće i dodaje stavku u isto vrijeme kao podsjetnik."
+          "todo_enabled": "Stvara listu Smeće ili Waste prema jeziku i dodaje stavku u isto vrijeme kao podsjetnik."
         }
       }
     },
@@ -56,7 +56,7 @@
           "language": "System prati jezik Home Assistanta.",
           "refresh_now": "Uključi da se kalendar odmah povuče nakon spremanja.",
           "notify_entities": "Companion entitet mobitela, npr. notify.vanjatest.",
-          "todo_enabled": "Stvara listu Smeće i dodaje stavku u isto vrijeme kao podsjetnik."
+          "todo_enabled": "Stvara listu Smeće ili Waste prema jeziku i dodaje stavku u isto vrijeme kao podsjetnik."
         }
       }
     }

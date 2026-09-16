@@ -53,6 +53,7 @@ TEXT: dict[str, dict[str, str]] = {
         "notify_body": "{when} ({date}) odvoze: {types}.",
         "notify_test": "TEST",
         "notify_empty": "Testna obavijest. Trenutačno nema predstojećeg termina.",
+        "todo_list_name": "Smeće",
     },
     LANG_EN: {
         "device_name": "Waste collection",
@@ -72,6 +73,7 @@ TEXT: dict[str, dict[str, str]] = {
         "notify_body": "{when} ({date}): {types}.",
         "notify_test": "TEST",
         "notify_empty": "Test notification. There is no upcoming collection.",
+        "todo_list_name": "Waste",
     },
 }
 
