@@ -8,7 +8,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import EVENT_HOMEASSISTANT_STARTED
 from homeassistant.core import CoreState, Event, HomeAssistant, callback
 from homeassistant.exceptions import HomeAssistantError
-from homeassistant.helpers.event import async_track_time_change
+from homeassistant.helpers.event import async_call_later, async_track_time_change
 from homeassistant.helpers.storage import Store
 from homeassistant.util import dt as dt_util
 
@@ -85,8 +85,14 @@ class MursEkomNotifier:
         self._schedule()
 
     def schedule_after_start(self) -> None:
+        @callback
+        def _later(_now) -> None:
+            self._after_task = self._create_task(self.async_after_start())
+
         if self.hass.state is CoreState.running:
-            self._after_task = self.hass.async_create_task(self.async_after_start())
+            # Never run To-Do/create-list during setup_entry — that deadlocks
+            # config entries and leaves the device with no entities.
+            self._unsub_started = async_call_later(self.hass, 2, _later)
             return
 
         async def _started(_event: Event) -> None:
@@ -95,6 +101,12 @@ class MursEkomNotifier:
         self._unsub_started = self.hass.bus.async_listen_once(
             EVENT_HOMEASSISTANT_STARTED, _started
         )
+
+    def _create_task(self, coro):
+        try:
+            return self.hass.async_create_task(coro, eager_start=False)
+        except TypeError:
+            return self.hass.async_create_task(coro)
 
     async def async_after_start(self) -> None:
         if self._todo_enabled():

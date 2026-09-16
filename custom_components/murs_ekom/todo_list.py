@@ -92,11 +92,16 @@ def _async_rename_entity(hass: HomeAssistant, entity_id: str, wanted: str) -> No
 
 async def _async_create_list(hass: HomeAssistant, wanted: str) -> None:
     try:
-        await hass.config_entries.flow.async_init(
-            _LOCAL_TODO,
-            context={"source": "user"},
-            data={_LIST_NAME_KEY: wanted},
+        await asyncio.wait_for(
+            hass.config_entries.flow.async_init(
+                _LOCAL_TODO,
+                context={"source": "user"},
+                data={_LIST_NAME_KEY: wanted},
+            ),
+            timeout=15,
         )
+    except TimeoutError:
+        _LOGGER.warning("Lista %s nije stvorena: timeout", wanted)
     except Exception as err:  # noqa: BLE001
         _LOGGER.warning("Lista %s nije stvorena: %s", wanted, err)
 
