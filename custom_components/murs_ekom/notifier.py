@@ -16,9 +16,11 @@ from .const import (
     CONF_NOTIFY_ENABLED,
     CONF_NOTIFY_ENTITIES,
     CONF_NOTIFY_TIME,
+    CONF_TODO_ENABLED,
     DEFAULT_NOTIFY_DAYS_BEFORE,
     DEFAULT_NOTIFY_ENABLED,
     DEFAULT_NOTIFY_TIME,
+    DEFAULT_TODO_ENABLED,
     DOMAIN,
     STORAGE_KEY,
     STORAGE_VERSION,
@@ -30,6 +32,7 @@ from .schedule import (
     notify_target_date,
     parse_time,
 )
+from .todo_list import async_add_collection_item, async_ensure_smece_list
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -77,6 +80,11 @@ class MursEkomNotifier:
         if isinstance(stored, dict):
             self._sent = stored
         self._schedule()
+        if self._todo_enabled():
+            try:
+                await async_ensure_smece_list(self.hass)
+            except Exception:  # noqa: BLE001
+                _LOGGER.exception("To-do lista Smeće nije spremna")
         try:
             await self.async_maybe_send(catch_up=True)
         except Exception:  # noqa: BLE001
@@ -111,18 +119,22 @@ class MursEkomNotifier:
     def reload_schedule(self) -> None:
         self._schedule()
 
-    def _options(self) -> tuple[bool, int, list[str]]:
+    def _todo_enabled(self) -> bool:
+        return bool(self.entry.options.get(CONF_TODO_ENABLED, DEFAULT_TODO_ENABLED))
+
+    def _options(self) -> tuple[bool, bool, int, list[str]]:
         options = self.entry.options
-        enabled = bool(options.get(CONF_NOTIFY_ENABLED, DEFAULT_NOTIFY_ENABLED))
+        notify_on = bool(options.get(CONF_NOTIFY_ENABLED, DEFAULT_NOTIFY_ENABLED))
+        todo_on = bool(options.get(CONF_TODO_ENABLED, DEFAULT_TODO_ENABLED))
         days_before = int(
             options.get(CONF_NOTIFY_DAYS_BEFORE, DEFAULT_NOTIFY_DAYS_BEFORE)
         )
         entities = list(options.get(CONF_NOTIFY_ENTITIES, []) or [])
-        return enabled, days_before, entities
+        return notify_on, todo_on, days_before, entities
 
     async def async_maybe_send(self, catch_up: bool = False, force: bool = False) -> bool:
-        enabled, days_before, entities = self._options()
-        if not enabled and not force:
+        notify_on, todo_on, days_before, entities = self._options()
+        if not notify_on and not todo_on and not force:
             return False
 
         now = dt_util.now()
@@ -145,10 +157,16 @@ class MursEkomNotifier:
 
         when_days = days_before
         title, message, icon = _payload(self.coordinator, item, when_days)
-        await self._async_deliver(title, message, icon, entities)
-        self._sent = {"last_key": key}
-        await self._store.async_save(self._sent)
-        return True
+        delivered = False
+        if notify_on or force:
+            await self._async_deliver(title, message, icon, entities)
+            delivered = True
+        if todo_on:
+            delivered = await self._async_add_todo(item, message) or delivered
+        if delivered and not force:
+            self._sent = {"last_key": key}
+            await self._store.async_save(self._sent)
+        return delivered
 
     async def async_send_test(self) -> None:
         item = self.coordinator.data.get("next")
@@ -161,6 +179,23 @@ class MursEkomNotifier:
             title, message, icon = _payload(self.coordinator, item)
             message = f"{self.coordinator.text('notify_test')}\n{message}"
         await self._async_deliver(title, message, icon, entities)
+        if self._todo_enabled() and item is not None:
+            await self._async_add_todo(
+                item, message, summary_prefix=self.coordinator.text("notify_test")
+            )
+
+    async def _async_add_todo(
+        self, item, message: str, summary_prefix: str | None = None
+    ) -> bool:
+        summary = self.coordinator.types_label(item.types)
+        if summary_prefix:
+            summary = f"{summary_prefix}: {summary}"
+        return await async_add_collection_item(
+            self.hass,
+            summary=summary,
+            due_date=item.date.isoformat(),
+            description=message,
+        )
 
     async def _async_deliver(
         self,

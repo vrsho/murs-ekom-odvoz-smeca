@@ -16,7 +16,8 @@
           "notify_enabled": "Uključi obavijesti",
           "notify_days_before": "Dana prije odvoza",
           "notify_time": "Vrijeme obavijesti",
-          "notify_entities": "Uređaji za obavijest"
+          "notify_entities": "Uređaji za obavijest",
+          "todo_enabled": "Šalji na To-Do listu"
         },
         "data_description": {
           "location": "Naselje za koje vrijedi kalendar odvoza.",
@@ -24,7 +25,8 @@
           "pull_interval_days": "1 = svaki dan, 7 = jednom tjedno.",
           "refresh_now": "Odmah povuci najnoviji kalendar pri spremanju.",
           "notify_days_before": "0 = isti dan, 1 = dan ranije.",
-          "notify_entities": "Companion entitet mobitela, npr. notify.vanjatest ili notify.mobile_app_iphone."
+          "notify_entities": "Companion entitet mobitela, npr. notify.vanjatest ili notify.mobile_app_iphone.",
+          "todo_enabled": "Stvara listu Smeće i dodaje stavku u isto vrijeme kao podsjetnik."
         }
       }
     },
@@ -46,13 +48,15 @@
           "notify_enabled": "Uključi obavijesti",
           "notify_days_before": "Dana prije odvoza",
           "notify_time": "Vrijeme obavijesti",
-          "notify_entities": "Uređaji za obavijest"
+          "notify_entities": "Uređaji za obavijest",
+          "todo_enabled": "Šalji na To-Do listu"
         },
         "data_description": {
           "pull_interval_days": "Zadano je 7 dana (jednom tjedno).",
           "language": "System prati jezik Home Assistanta.",
           "refresh_now": "Uključi da se kalendar odmah povuče nakon spremanja.",
-          "notify_entities": "Companion entitet mobitela, npr. notify.vanjatest."
+          "notify_entities": "Companion entitet mobitela, npr. notify.vanjatest.",
+          "todo_enabled": "Stvara listu Smeće i dodaje stavku u isto vrijeme kao podsjetnik."
         }
       }
     }

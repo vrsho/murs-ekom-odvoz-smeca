@@ -16,7 +16,8 @@
           "notify_enabled": "Enable notifications",
           "notify_days_before": "Days before collection",
           "notify_time": "Notification time",
-          "notify_entities": "Notify devices"
+          "notify_entities": "Notify devices",
+          "todo_enabled": "Send to To-Do list"
         },
         "data_description": {
           "location": "Settlement for this collection calendar.",
@@ -24,7 +25,8 @@
           "pull_interval_days": "1 = daily, 7 = once a week.",
           "refresh_now": "Pull the latest calendar immediately when saving.",
           "notify_days_before": "0 = same day, 1 = the day before.",
-          "notify_entities": "Companion phone entity, e.g. notify.vanjatest or notify.mobile_app_iphone."
+          "notify_entities": "Companion phone entity, e.g. notify.vanjatest or notify.mobile_app_iphone.",
+          "todo_enabled": "Creates a Smeće list and adds an item at the same reminder time."
         }
       }
     },
@@ -46,13 +48,15 @@
           "notify_enabled": "Enable notifications",
           "notify_days_before": "Days before collection",
           "notify_time": "Notification time",
-          "notify_entities": "Notify devices"
+          "notify_entities": "Notify devices",
+          "todo_enabled": "Send to To-Do list"
         },
         "data_description": {
           "pull_interval_days": "Default is 7 days (once a week).",
           "language": "System follows Home Assistant language.",
           "refresh_now": "Enable to pull the calendar immediately after save.",
-          "notify_entities": "Companion phone entity, e.g. notify.vanjatest."
+          "notify_entities": "Companion phone entity, e.g. notify.vanjatest.",
+          "todo_enabled": "Creates a Smeće list and adds an item at the same reminder time."
         }
       }
     }

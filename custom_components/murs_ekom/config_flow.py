@@ -32,11 +32,13 @@ from .const import (
     CONF_NOTIFY_TIME,
     CONF_PULL_INTERVAL_DAYS,
     CONF_REFRESH_NOW,
+    CONF_TODO_ENABLED,
     DEFAULT_LANGUAGE,
     DEFAULT_NOTIFY_DAYS_BEFORE,
     DEFAULT_NOTIFY_ENABLED,
     DEFAULT_NOTIFY_TIME,
     DEFAULT_PULL_INTERVAL_DAYS,
+    DEFAULT_TODO_ENABLED,
     DOMAIN,
     LANG_EN,
     LANG_HR,
@@ -128,6 +130,10 @@ def _options_schema(
             ): EntitySelector(
                 EntitySelectorConfig(domain="notify", multiple=True)
             ),
+            vol.Required(
+                CONF_TODO_ENABLED,
+                default=defaults.get(CONF_TODO_ENABLED, DEFAULT_TODO_ENABLED),
+            ): BooleanSelector(),
         }
     )
     return vol.Schema(schema)
@@ -197,6 +203,9 @@ class MursEkomConfigFlow(ConfigFlow, domain=DOMAIN):
                     ),
                     CONF_NOTIFY_TIME: user_input[CONF_NOTIFY_TIME],
                     CONF_NOTIFY_ENTITIES: user_input.get(CONF_NOTIFY_ENTITIES, []),
+                    CONF_TODO_ENABLED: bool(
+                        user_input.get(CONF_TODO_ENABLED, DEFAULT_TODO_ENABLED)
+                    ),
                 },
             )
 
@@ -235,6 +244,9 @@ class MursEkomOptionsFlow(OptionsFlow):
                 CONF_NOTIFY_DAYS_BEFORE: int(user_input[CONF_NOTIFY_DAYS_BEFORE]),
                 CONF_NOTIFY_TIME: user_input[CONF_NOTIFY_TIME],
                 CONF_NOTIFY_ENTITIES: user_input.get(CONF_NOTIFY_ENTITIES, []),
+                CONF_TODO_ENABLED: bool(
+                    user_input.get(CONF_TODO_ENABLED, DEFAULT_TODO_ENABLED)
+                ),
             }
             if refresh_now:
                 options["force_fetch_at"] = dt_util.now().isoformat()
