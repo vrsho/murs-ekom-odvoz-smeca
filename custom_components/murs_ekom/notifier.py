@@ -331,7 +331,7 @@ class MursEkomNotifier:
             language=self.coordinator.language,
             summary=summary,
             due_date=item.date.isoformat(),
-            due_datetime=f"{item.date.isoformat()} 10:00:00",
+            due_datetime=f"{item.date.isoformat()} 06:00:00",
             description=message,
         )
 
