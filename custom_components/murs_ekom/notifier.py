@@ -6,7 +6,7 @@ import logging
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import EVENT_HOMEASSISTANT_STARTED
-from homeassistant.core import CoreState, Event, HomeAssistant, callback
+from homeassistant.core import CoreState, HomeAssistant, callback
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.event import async_call_later, async_track_time_change
 from homeassistant.helpers.storage import Store
@@ -95,27 +95,25 @@ class MursEkomNotifier:
 
     def schedule_after_start(self) -> None:
         @callback
-        def _later(_now) -> None:
-            self._after_task = self._create_task(self.async_after_start())
+        def _run(_now=None) -> None:
+            self._unsub_started = None
+            self._after_task = self.hass.async_create_task(self.async_after_start())
 
         if self.hass.state is CoreState.running:
-            # Never run To-Do/create-list during setup_entry — that deadlocks
-            # config entries and leaves the device with no entities.
-            self._unsub_started = async_call_later(self.hass, 2, _later)
+            self._unsub_started = async_call_later(self.hass, 2, _run)
             return
 
-        async def _started(_event: Event) -> None:
-            await self.async_after_start()
-
         self._unsub_started = self.hass.bus.async_listen_once(
-            EVENT_HOMEASSISTANT_STARTED, _started
+            EVENT_HOMEASSISTANT_STARTED, _run
         )
 
-    def _create_task(self, coro):
+    def _safe_unsub(self, unsub) -> None:
+        if unsub is None:
+            return
         try:
-            return self.hass.async_create_task(coro, eager_start=False)
-        except TypeError:
-            return self.hass.async_create_task(coro)
+            unsub()
+        except (ValueError, KeyError, TypeError):
+            pass
 
     async def async_after_start(self) -> None:
         try:
@@ -178,18 +176,18 @@ class MursEkomNotifier:
             )
 
     async def async_stop(self) -> None:
-        if self._unsub_started:
-            self._unsub_started()
-            self._unsub_started = None
+        unsub_started = self._unsub_started
+        self._unsub_started = None
+        self._safe_unsub(unsub_started)
         if self._after_task:
             self._after_task.cancel()
             self._after_task = None
-        if self._unsub_remind:
-            self._unsub_remind()
-            self._unsub_remind = None
-        if self._unsub:
-            self._unsub()
-            self._unsub = None
+        unsub_remind = self._unsub_remind
+        self._unsub_remind = None
+        self._safe_unsub(unsub_remind)
+        unsub = self._unsub
+        self._unsub = None
+        self._safe_unsub(unsub)
 
     def reload_schedule(self) -> None:
         self._schedule()
@@ -275,6 +273,7 @@ class MursEkomNotifier:
         if await async_collection_completed(
             self.hass, summary=summary, due_date=item.date.isoformat()
         ):
+            _LOGGER.info("Jutarnji podsjetnik preskočen, To-Do je riješen")
             return False
         title = self.coordinator.text("remind_title")
         message = self.coordinator.text(

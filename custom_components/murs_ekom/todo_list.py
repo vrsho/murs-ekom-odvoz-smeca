@@ -122,10 +122,10 @@ async def async_collection_completed(
 
 def _matches_collection(item: dict, summary: str, due_date: str) -> bool:
     text = str(item.get("summary") or "")
-    if text != summary and not text.endswith(summary):
+    if text != summary:
         return False
     due = str(item.get("due") or item.get("due_date") or "")
-    return not due or due.startswith(due_date)
+    return bool(due) and due.startswith(due_date)
 
 
 async def _list_items(hass: HomeAssistant, entity_id: str) -> list[dict]:
