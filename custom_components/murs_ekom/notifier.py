@@ -46,7 +46,13 @@ from .todo_list import (
 _LOGGER = logging.getLogger(__name__)
 
 
-def _payload(coordinator: MursEkomCoordinator, item, days_before: int | None = None) -> tuple[str, str, str]:
+def _payload(
+    coordinator: MursEkomCoordinator,
+    item,
+    days_before: int | None = None,
+    *,
+    include_location: bool = True,
+) -> tuple[str, str, str]:
     today = dt_util.now().date()
     days = days_before if days_before is not None else days_until(item, today)
     when = when_text(coordinator.language, days)
@@ -64,7 +70,8 @@ def _payload(coordinator: MursEkomCoordinator, item, days_before: int | None = N
         lines.append(coordinator.text("bulky_note"))
     if "branches" in item.types:
         lines.append(coordinator.text("branches_note"))
-    lines.append(coordinator.location_title)
+    if include_location:
+        lines.append(coordinator.location_title)
     return title, "\n".join(lines), item.icon
 
 
@@ -244,7 +251,10 @@ class MursEkomNotifier:
                 self._sent["last_key"] = key
             delivered = True
         if todo_on and (force or not todo_done):
-            if await self._async_add_todo(item, message):
+            _title, todo_message, _icon = _payload(
+                self.coordinator, item, when_days, include_location=False
+            )
+            if await self._async_add_todo(item, todo_message):
                 if not force:
                     self._sent["last_todo_key"] = key
                 delivered = True
@@ -301,8 +311,13 @@ class MursEkomNotifier:
             message = f"{self.coordinator.text('notify_test')}\n{message}"
         await self._async_deliver(title, message, icon, entities)
         if self._todo_enabled() and item is not None:
+            _title, todo_message, _icon = _payload(
+                self.coordinator, item, include_location=False
+            )
             await self._async_add_todo(
-                item, message, summary_prefix=self.coordinator.text("notify_test")
+                item,
+                f"{self.coordinator.text('notify_test')}\n{todo_message}",
+                summary_prefix=self.coordinator.text("notify_test"),
             )
 
     async def _async_add_todo(
@@ -316,6 +331,7 @@ class MursEkomNotifier:
             language=self.coordinator.language,
             summary=summary,
             due_date=item.date.isoformat(),
+            due_datetime=f"{item.date.isoformat()} 10:00:00",
             description=message,
         )
 
@@ -332,7 +348,7 @@ class MursEkomNotifier:
             _LOGGER.info("Nema termina za To-Do stavku")
             return
         _title, message, _icon = _payload(
-            self.coordinator, item, days_until(item, today)
+            self.coordinator, item, days_until(item, today), include_location=False
         )
         await self._async_add_todo(item, message)
 

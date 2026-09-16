@@ -71,16 +71,36 @@ async def async_add_collection_item(
     summary: str,
     due_date: str,
     description: str,
+    due_datetime: str | None = None,
 ) -> bool:
     entity_id = await async_ensure_todo_list(hass, language)
     if entity_id is None or not hass.services.has_service("todo", "add_item"):
         _LOGGER.warning("Stavka na To-do listu nije dodana: %s", summary)
         return False
     if await _already_exists(hass, entity_id, summary, due_date):
+        if due_datetime:
+            await _async_call_update(
+                hass,
+                entity_id,
+                summary,
+                due_datetime=due_datetime,
+                description=description,
+            )
         return True
-    payloads = (
+    payloads: tuple[dict, ...] = ()
+    if due_datetime:
+        payloads = (
+            {
+                "item": summary,
+                "due_datetime": due_datetime,
+                "description": description,
+            },
+            {"item": summary, "due_datetime": due_datetime},
+        )
+    payloads = payloads + (
         {"item": summary, "due_date": due_date, "description": description},
         {"item": summary, "due_date": due_date},
+        {"item": summary, "description": description},
         {"item": summary},
     )
     for payload in payloads:
@@ -103,6 +123,34 @@ async def _async_call_add(hass: HomeAssistant, entity_id: str, payload: dict) ->
         return True
     except Exception as err:  # noqa: BLE001
         _LOGGER.warning("todo.add_item na %s nije uspio: %s", entity_id, err)
+        return False
+
+
+async def _async_call_update(
+    hass: HomeAssistant,
+    entity_id: str,
+    summary: str,
+    *,
+    due_datetime: str,
+    description: str,
+) -> bool:
+    if not hass.services.has_service("todo", "update_item"):
+        return False
+    try:
+        await hass.services.async_call(
+            "todo",
+            "update_item",
+            {
+                "item": summary,
+                "due_datetime": due_datetime,
+                "description": description,
+            },
+            blocking=True,
+            target={"entity_id": entity_id},
+        )
+        return True
+    except Exception as err:  # noqa: BLE001
+        _LOGGER.debug("todo.update_item na %s: %s", entity_id, err)
         return False
 
 
