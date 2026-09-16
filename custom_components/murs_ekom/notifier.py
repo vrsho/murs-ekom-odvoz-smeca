@@ -6,6 +6,7 @@ import logging
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.event import async_track_time_change
 from homeassistant.helpers.storage import Store
 from homeassistant.util import dt as dt_util
@@ -76,7 +77,10 @@ class MursEkomNotifier:
         if isinstance(stored, dict):
             self._sent = stored
         self._schedule()
-        await self.async_maybe_send(catch_up=True)
+        try:
+            await self.async_maybe_send(catch_up=True)
+        except Exception:  # noqa: BLE001
+            _LOGGER.exception("Catch-up obavijest nije uspjela")
 
     def _schedule(self) -> None:
         if self._unsub:
@@ -165,26 +169,61 @@ class MursEkomNotifier:
         icon: str,
         entities: list[str],
     ) -> None:
-        data = {
-            "title": title,
-            "message": message,
-            "data": {
-                "notification_icon": icon,
-                "tag": "murs-ekom-odvoz",
-                "channel": self.coordinator.text("device_name"),
-                "color": "#2E7D32",
-                "importance": "default",
-                "push": {"sound": "default"},
-                "group": "murs-ekom",
-            },
+        extra = {
+            "notification_icon": icon,
+            "tag": "murs-ekom-odvoz",
+            "channel": self.coordinator.text("device_name"),
+            "color": "#2E7D32",
+            "importance": "default",
+            "push": {"sound": "default"},
+            "group": "murs-ekom",
         }
-        if entities:
-            for entity_id in entities:
-                service = entity_id.split(".", 1)[-1]
+        sent = False
+        for entity_id in entities:
+            if await self._async_notify_entity(entity_id, title, message, extra):
+                sent = True
+        if not entities or not sent:
+            await self._async_persistent(title, message)
+        if sent or not entities:
+            _LOGGER.info("Poslana obavijest odvoza: %s", title)
+
+    async def _async_notify_entity(
+        self,
+        entity_id: str,
+        title: str,
+        message: str,
+        extra: dict,
+    ) -> bool:
+        service = entity_id.split(".", 1)[-1] if "." in entity_id else entity_id
+        try:
+            if self.hass.services.has_service("notify", service):
                 await self.hass.services.async_call(
-                    "notify", service, data, blocking=False
+                    "notify",
+                    service,
+                    {"title": title, "message": message, "data": extra},
+                    blocking=False,
                 )
-        else:
+                return True
+            if self.hass.services.has_service("notify", "send_message"):
+                await self.hass.services.async_call(
+                    "notify",
+                    "send_message",
+                    {"title": title, "message": message},
+                    blocking=False,
+                    target={"entity_id": entity_id},
+                )
+                return True
+        except HomeAssistantError as err:
+            _LOGGER.warning("Obavijest na %s nije uspjela: %s", entity_id, err)
+            return False
+        _LOGGER.warning(
+            "Nema notify akcije za %s. Odaberi Companion entitet, npr. notify.mobile_app_...",
+            entity_id,
+        )
+        return False
+
+    async def _async_persistent(self, title: str, message: str) -> None:
+        try:
             await self.hass.services.async_call(
                 "persistent_notification",
                 "create",
@@ -195,4 +234,5 @@ class MursEkomNotifier:
                 },
                 blocking=False,
             )
-        _LOGGER.info("Poslana obavijest odvoza: %s", title)
+        except HomeAssistantError as err:
+            _LOGGER.warning("Persistent obavijest nije uspjela: %s", err)

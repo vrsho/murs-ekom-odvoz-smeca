@@ -24,7 +24,7 @@
           "pull_interval_days": "1 = daily, 7 = once a week.",
           "refresh_now": "Pull the latest calendar immediately when saving.",
           "notify_days_before": "0 = same day, 1 = the day before.",
-          "notify_entities": "Companion app notify entities, e.g. notify.mobile_app_phone."
+          "notify_entities": "Companion phone entity, e.g. notify.vanjatest or notify.mobile_app_iphone."
         }
       }
     },
@@ -51,7 +51,8 @@
         "data_description": {
           "pull_interval_days": "Default is 7 days (once a week).",
           "language": "System follows Home Assistant language.",
-          "refresh_now": "Enable to pull the calendar immediately after save."
+          "refresh_now": "Enable to pull the calendar immediately after save.",
+          "notify_entities": "Companion phone entity, e.g. notify.vanjatest."
         }
       }
     }
