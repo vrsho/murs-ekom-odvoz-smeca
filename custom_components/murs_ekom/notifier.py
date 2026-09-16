@@ -18,10 +18,14 @@ from .const import (
     CONF_NOTIFY_ENTITIES,
     CONF_NOTIFY_TIME,
     CONF_TODO_ENABLED,
+    CONF_TODO_REMIND_DAY,
+    CONF_TODO_REMIND_TIME,
     DEFAULT_NOTIFY_DAYS_BEFORE,
     DEFAULT_NOTIFY_ENABLED,
     DEFAULT_NOTIFY_TIME,
     DEFAULT_TODO_ENABLED,
+    DEFAULT_TODO_REMIND_DAY,
+    DEFAULT_TODO_REMIND_TIME,
     DOMAIN,
     STORAGE_KEY,
     STORAGE_VERSION,
@@ -29,11 +33,16 @@ from .const import (
 from .coordinator import MursEkomCoordinator
 from .i18n import format_date, when_text
 from .schedule import (
+    clamp_morning_time,
     days_until,
     notify_target_date,
     parse_time,
 )
-from .todo_list import async_add_collection_item, async_ensure_todo_list
+from .todo_list import (
+    async_add_collection_item,
+    async_collection_completed,
+    async_ensure_todo_list,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -73,6 +82,7 @@ class MursEkomNotifier:
         self.entry = entry
         self.coordinator = coordinator
         self._unsub = None
+        self._unsub_remind = None
         self._unsub_started = None
         self._after_task = None
         self._store = Store(hass, STORAGE_VERSION, f"{STORAGE_KEY}_{entry.entry_id}")
@@ -118,11 +128,18 @@ class MursEkomNotifier:
             await self.async_maybe_send(catch_up=True)
         except Exception:  # noqa: BLE001
             _LOGGER.exception("Catch-up obavijest nije uspjela")
+        try:
+            await self.async_maybe_day_remind(catch_up=True)
+        except Exception:  # noqa: BLE001
+            _LOGGER.exception("Jutarnji To-Do podsjetnik nije uspio")
 
     def _schedule(self) -> None:
         if self._unsub:
             self._unsub()
             self._unsub = None
+        if self._unsub_remind:
+            self._unsub_remind()
+            self._unsub_remind = None
 
         hour, minute, second = parse_time(
             self.entry.options.get(CONF_NOTIFY_TIME, DEFAULT_NOTIFY_TIME)
@@ -130,7 +147,7 @@ class MursEkomNotifier:
 
         @callback
         def _fire(_now) -> None:
-            self.hass.async_create_task(self.async_maybe_send())
+            self._create_task(self.async_maybe_send())
 
         self._unsub = async_track_time_change(
             self.hass,
@@ -140,6 +157,27 @@ class MursEkomNotifier:
             second=second,
         )
 
+        if self._remind_on_day():
+            remind_hour, remind_minute, remind_second = parse_time(
+                clamp_morning_time(
+                    self.entry.options.get(
+                        CONF_TODO_REMIND_TIME, DEFAULT_TODO_REMIND_TIME
+                    )
+                )
+            )
+
+            @callback
+            def _remind(_now) -> None:
+                self._create_task(self.async_maybe_day_remind())
+
+            self._unsub_remind = async_track_time_change(
+                self.hass,
+                _remind,
+                hour=remind_hour,
+                minute=remind_minute,
+                second=remind_second,
+            )
+
     async def async_stop(self) -> None:
         if self._unsub_started:
             self._unsub_started()
@@ -147,6 +185,9 @@ class MursEkomNotifier:
         if self._after_task:
             self._after_task.cancel()
             self._after_task = None
+        if self._unsub_remind:
+            self._unsub_remind()
+            self._unsub_remind = None
         if self._unsub:
             self._unsub()
             self._unsub = None
@@ -156,6 +197,11 @@ class MursEkomNotifier:
 
     def _todo_enabled(self) -> bool:
         return bool(self.entry.options.get(CONF_TODO_ENABLED, DEFAULT_TODO_ENABLED))
+
+    def _remind_on_day(self) -> bool:
+        return self._todo_enabled() and bool(
+            self.entry.options.get(CONF_TODO_REMIND_DAY, DEFAULT_TODO_REMIND_DAY)
+        )
 
     def _options(self) -> tuple[bool, bool, int, list[str]]:
         options = self.entry.options
@@ -209,6 +255,42 @@ class MursEkomNotifier:
             await self._store.async_save(self._sent)
         return delivered
 
+    async def async_maybe_day_remind(self, catch_up: bool = False) -> bool:
+        if not self._remind_on_day():
+            return False
+        now = dt_util.now()
+        today = now.date()
+        item = self.coordinator.collection_on(today)
+        if item is None:
+            return False
+        remind_time = clamp_morning_time(
+            self.entry.options.get(CONF_TODO_REMIND_TIME, DEFAULT_TODO_REMIND_TIME)
+        )
+        hour, minute, _second = parse_time(remind_time)
+        if catch_up and (now.hour, now.minute) < (hour, minute):
+            return False
+        key = f"remind_{today.isoformat()}"
+        if self._sent.get("last_remind_key") == key:
+            return False
+        summary = self.coordinator.types_label(item.types)
+        if await async_collection_completed(
+            self.hass, summary=summary, due_date=item.date.isoformat()
+        ):
+            return False
+        title = self.coordinator.text("remind_title")
+        message = self.coordinator.text(
+            "remind_body",
+            date=format_date(item.date),
+            types=summary,
+        )
+        entities = list(self.entry.options.get(CONF_NOTIFY_ENTITIES, []) or [])
+        await self._async_deliver(
+            title, message, item.icon, entities, tag="murs-ekom-odvoz-jutro"
+        )
+        self._sent["last_remind_key"] = key
+        await self._store.async_save(self._sent)
+        return True
+
     async def async_send_test(self) -> None:
         item = self.coordinator.data.get("next")
         entities = self.entry.options.get(CONF_NOTIFY_ENTITIES, []) or []
@@ -245,10 +327,11 @@ class MursEkomNotifier:
         message: str,
         icon: str,
         entities: list[str],
+        tag: str = "murs-ekom-odvoz",
     ) -> None:
         extra = {
             "notification_icon": icon,
-            "tag": "murs-ekom-odvoz",
+            "tag": tag,
             "channel": self.coordinator.text("device_name"),
             "color": "#2E7D32",
             "importance": "default",

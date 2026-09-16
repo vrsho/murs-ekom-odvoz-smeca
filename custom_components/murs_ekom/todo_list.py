@@ -159,11 +159,32 @@ async def _async_call_add(hass: HomeAssistant, entity_id: str, payload: dict) ->
             return False
 
 
-async def _already_exists(
-    hass: HomeAssistant, entity_id: str, summary: str, due_date: str
+async def async_collection_completed(
+    hass: HomeAssistant, *, summary: str, due_date: str
 ) -> bool:
-    if not hass.services.has_service("todo", "get_items"):
+    entity_id = find_todo_entity(hass)
+    if entity_id is None:
         return False
+    items = await _list_items(hass, entity_id)
+    for item in items:
+        if not _matches_collection(item, summary, due_date):
+            continue
+        if str(item.get("status") or "").lower() == "completed":
+            return True
+    return False
+
+
+def _matches_collection(item: dict, summary: str, due_date: str) -> bool:
+    text = str(item.get("summary") or "")
+    if text != summary and not text.endswith(summary):
+        return False
+    due = str(item.get("due") or item.get("due_date") or "")
+    return not due or due.startswith(due_date)
+
+
+async def _list_items(hass: HomeAssistant, entity_id: str) -> list[dict]:
+    if not hass.services.has_service("todo", "get_items"):
+        return []
     try:
         response = await hass.services.async_call(
             "todo",
@@ -174,16 +195,17 @@ async def _already_exists(
             target={"entity_id": entity_id},
         )
     except HomeAssistantError:
-        return False
+        return []
     if not isinstance(response, dict):
-        return False
+        return []
     items = (response.get(entity_id) or {}).get("items") or []
-    for item in items:
-        if not isinstance(item, dict):
-            continue
-        if str(item.get("summary") or "") != summary:
-            continue
-        due = str(item.get("due") or item.get("due_date") or "")
-        if not due or due.startswith(due_date):
+    return [item for item in items if isinstance(item, dict)]
+
+
+async def _already_exists(
+    hass: HomeAssistant, entity_id: str, summary: str, due_date: str
+) -> bool:
+    for item in await _list_items(hass, entity_id):
+        if _matches_collection(item, summary, due_date):
             return True
     return False

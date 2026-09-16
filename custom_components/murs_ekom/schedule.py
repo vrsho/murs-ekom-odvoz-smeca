@@ -186,6 +186,16 @@ def parse_time(value: str | time) -> tuple[int, int, int]:
     return parsed.hour, parsed.minute, parsed.second
 
 
+def clamp_morning_time(value: str | time) -> str:
+    """Vrijeme jutarnjeg podsjetnika, 05:00–10:59."""
+    hour, minute, second = parse_time(value)
+    if hour < 5:
+        hour, minute, second = 5, 0, 0
+    elif hour > 10:
+        hour, minute, second = 10, 0, 0
+    return f"{hour:02d}:{minute:02d}:{second:02d}"
+
+
 def waste_type_name(waste_type: str) -> str:
     return WASTE_TYPES[waste_type]["name"]
 

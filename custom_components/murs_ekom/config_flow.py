@@ -33,18 +33,23 @@ from .const import (
     CONF_PULL_INTERVAL_DAYS,
     CONF_REFRESH_NOW,
     CONF_TODO_ENABLED,
+    CONF_TODO_REMIND_DAY,
+    CONF_TODO_REMIND_TIME,
     DEFAULT_LANGUAGE,
     DEFAULT_NOTIFY_DAYS_BEFORE,
     DEFAULT_NOTIFY_ENABLED,
     DEFAULT_NOTIFY_TIME,
     DEFAULT_PULL_INTERVAL_DAYS,
     DEFAULT_TODO_ENABLED,
+    DEFAULT_TODO_REMIND_DAY,
+    DEFAULT_TODO_REMIND_TIME,
     DOMAIN,
     LANG_EN,
     LANG_HR,
     LANG_SYSTEM,
 )
 from .source import API_URL, USER_AGENT, fallback_locations, parse_locations
+from .schedule import clamp_morning_time
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -134,6 +139,16 @@ def _options_schema(
                 CONF_TODO_ENABLED,
                 default=defaults.get(CONF_TODO_ENABLED, DEFAULT_TODO_ENABLED),
             ): BooleanSelector(),
+            vol.Required(
+                CONF_TODO_REMIND_DAY,
+                default=defaults.get(CONF_TODO_REMIND_DAY, DEFAULT_TODO_REMIND_DAY),
+            ): BooleanSelector(),
+            vol.Required(
+                CONF_TODO_REMIND_TIME,
+                default=defaults.get(
+                    CONF_TODO_REMIND_TIME, DEFAULT_TODO_REMIND_TIME
+                ),
+            ): TimeSelector(),
         }
     )
     return vol.Schema(schema)
@@ -206,6 +221,14 @@ class MursEkomConfigFlow(ConfigFlow, domain=DOMAIN):
                     CONF_TODO_ENABLED: bool(
                         user_input.get(CONF_TODO_ENABLED, DEFAULT_TODO_ENABLED)
                     ),
+                    CONF_TODO_REMIND_DAY: bool(
+                        user_input.get(CONF_TODO_REMIND_DAY, DEFAULT_TODO_REMIND_DAY)
+                    ),
+                    CONF_TODO_REMIND_TIME: clamp_morning_time(
+                        user_input.get(
+                            CONF_TODO_REMIND_TIME, DEFAULT_TODO_REMIND_TIME
+                        )
+                    ),
                 },
             )
 
@@ -246,6 +269,12 @@ class MursEkomOptionsFlow(OptionsFlow):
                 CONF_NOTIFY_ENTITIES: user_input.get(CONF_NOTIFY_ENTITIES, []),
                 CONF_TODO_ENABLED: bool(
                     user_input.get(CONF_TODO_ENABLED, DEFAULT_TODO_ENABLED)
+                ),
+                CONF_TODO_REMIND_DAY: bool(
+                    user_input.get(CONF_TODO_REMIND_DAY, DEFAULT_TODO_REMIND_DAY)
+                ),
+                CONF_TODO_REMIND_TIME: clamp_morning_time(
+                    user_input.get(CONF_TODO_REMIND_TIME, DEFAULT_TODO_REMIND_TIME)
                 ),
             }
             if refresh_now:

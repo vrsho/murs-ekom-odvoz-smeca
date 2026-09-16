@@ -54,6 +54,8 @@ TEXT: dict[str, dict[str, str]] = {
         "notify_test": "TEST",
         "notify_empty": "Testna obavijest. Trenutačno nema predstojećeg termina.",
         "todo_list_name": "Smeće",
+        "remind_title": "Odvoz smeća danas",
+        "remind_body": "To-Do stavka još nije označena kao riješena. Danas ({date}) odvoze: {types}.",
     },
     LANG_EN: {
         "device_name": "Waste collection",
@@ -74,6 +76,8 @@ TEXT: dict[str, dict[str, str]] = {
         "notify_test": "TEST",
         "notify_empty": "Test notification. There is no upcoming collection.",
         "todo_list_name": "Waste",
+        "remind_title": "Waste collection today",
+        "remind_body": "The To-Do item is not marked done. Today ({date}): {types}.",
     },
 }
 

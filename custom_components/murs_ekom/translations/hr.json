@@ -17,7 +17,9 @@
           "notify_days_before": "Dana prije odvoza",
           "notify_time": "Vrijeme obavijesti",
           "notify_entities": "Uređaji za obavijest",
-          "todo_enabled": "Šalji na To-Do listu"
+          "todo_enabled": "Šalji na To-Do listu",
+          "todo_remind_day": "Podsjeti još jednom na dan odvoza",
+          "todo_remind_time": "Jutarnji podsjetnik (5:00–10:00)"
         },
         "data_description": {
           "location": "Naselje za koje vrijedi kalendar odvoza.",
@@ -26,7 +28,9 @@
           "refresh_now": "Odmah povuci najnoviji kalendar pri spremanju.",
           "notify_days_before": "0 = isti dan, 1 = dan ranije.",
           "notify_entities": "Companion entitet mobitela, npr. notify.vanjatest ili notify.mobile_app_iphone.",
-          "todo_enabled": "Stvara listu Smeće ili Waste prema jeziku i dodaje stavku u isto vrijeme kao podsjetnik."
+          "todo_enabled": "Stvara listu Smeće ili Waste prema jeziku i dodaje stavku u isto vrijeme kao podsjetnik.",
+          "todo_remind_day": "Samo uz Šalji na To-Do listu. Šalje obavijest ujutro ako stavka nije označena kao riješena.",
+          "todo_remind_time": "Bilo koje vrijeme između 5:00 i 10:00, npr. 5:10 ili 6:25."
         }
       }
     },
@@ -49,14 +53,18 @@
           "notify_days_before": "Dana prije odvoza",
           "notify_time": "Vrijeme obavijesti",
           "notify_entities": "Uređaji za obavijest",
-          "todo_enabled": "Šalji na To-Do listu"
+          "todo_enabled": "Šalji na To-Do listu",
+          "todo_remind_day": "Podsjeti još jednom na dan odvoza",
+          "todo_remind_time": "Jutarnji podsjetnik (5:00–10:00)"
         },
         "data_description": {
           "pull_interval_days": "Zadano je 7 dana (jednom tjedno).",
           "language": "System prati jezik Home Assistanta.",
           "refresh_now": "Uključi da se kalendar odmah povuče nakon spremanja.",
           "notify_entities": "Companion entitet mobitela, npr. notify.vanjatest.",
-          "todo_enabled": "Stvara listu Smeće ili Waste prema jeziku i dodaje stavku u isto vrijeme kao podsjetnik."
+          "todo_enabled": "Stvara listu Smeće ili Waste prema jeziku i dodaje stavku u isto vrijeme kao podsjetnik.",
+          "todo_remind_day": "Samo uz Šalji na To-Do listu. Šalje obavijest ujutro ako stavka nije označena kao riješena.",
+          "todo_remind_time": "Bilo koje vrijeme između 5:00 i 10:00, npr. 5:10 ili 6:25."
         }
       }
     }

@@ -53,6 +53,7 @@ Vrste otpada: miješani komunalni, bio, plastika i papir, metal/tetrapak/staklo,
    - **Vrijeme:** npr. `18:00:00`
    - **Uređaji:** `notify.mobile_app_tvoj_telefon`
    - **Šalji na To-Do listu:** stvara listu **Smeće** (HR) ili **Waste** (EN) i dodaje stavku u isto vrijeme kao podsjetnik
+   - **Podsjeti još jednom na dan odvoza:** ujutro (bilo koje vrijeme 5:00–10:00, npr. 6:25) ako To-Do stavka nije označena kao riješena
 3. **Razmak povlačenja:** `7` dana (jednom tjedno).
 
 Naselje, interval i obavijesti kasnije mijenjaš na unosu integracije → **Konfiguriraj**.
