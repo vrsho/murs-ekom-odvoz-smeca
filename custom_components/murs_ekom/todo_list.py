@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import asyncio
 import logging
 
 from homeassistant.core import HomeAssistant
@@ -32,78 +31,37 @@ def _is_managed_name(name: str) -> bool:
     return _folded(name) in _MANAGED_NAMES
 
 
-def _managed_entries(hass: HomeAssistant):
-    for entry in hass.config_entries.async_entries(_LOCAL_TODO):
-        name = str(entry.data.get(_LIST_NAME_KEY) or entry.title or "")
-        key = str(entry.data.get(_STORAGE_KEY) or "")
-        if _is_managed_name(name) or key in _MANAGED_NAMES:
-            yield entry
-
-
-def _entity_for_entry(hass: HomeAssistant, entry) -> str | None:
-    registry = er.async_get(hass)
-    for item in er.async_entries_for_config_entry(registry, entry.entry_id):
-        if item.domain == "todo" and not item.disabled:
-            return item.entity_id
-    key = str(entry.data.get(_STORAGE_KEY) or "")
-    if key and hass.states.get(f"todo.{key}"):
-        return f"todo.{key}"
-    return None
-
-
 def find_todo_entity(hass: HomeAssistant) -> str | None:
     for state in hass.states.async_all("todo"):
         if state.entity_id in _MANAGED_ENTITY_IDS or _is_managed_name(state.name or ""):
             return state.entity_id
-    for entry in _managed_entries(hass):
-        entity_id = _entity_for_entry(hass, entry)
-        if entity_id:
-            return entity_id
+    registry = er.async_get(hass)
+    for entity_id in _MANAGED_ENTITY_IDS:
+        item = registry.async_get(entity_id)
+        if item is not None and not item.disabled:
+            return item.entity_id
+    for entry in hass.config_entries.async_entries(_LOCAL_TODO):
+        name = str(entry.data.get(_LIST_NAME_KEY) or entry.title or "")
+        key = str(entry.data.get(_STORAGE_KEY) or "")
+        if not _is_managed_name(name) and key not in _MANAGED_NAMES:
+            continue
+        for item in er.async_entries_for_config_entry(registry, entry.entry_id):
+            if item.domain == "todo" and not item.disabled:
+                return item.entity_id
+        if key:
+            return f"todo.{key}"
     return None
 
 
 async def async_ensure_todo_list(hass: HomeAssistant, language: str) -> str | None:
-    wanted = list_name_for(language)
     entity_id = find_todo_entity(hass)
-    if entity_id is None and next(_managed_entries(hass), None) is None:
-        await _async_create_list(hass, wanted)
-        for _ in range(16):
-            entity_id = find_todo_entity(hass)
-            if entity_id:
-                break
-            await asyncio.sleep(0.25)
     if entity_id:
-        _async_rename_entity(hass, entity_id, wanted)
         return entity_id
-    _LOGGER.warning("Lista %s je uključena, ali entitet još nije dostupan", wanted)
+    _LOGGER.warning(
+        "Nema To-Do liste %s. Dodaj Local to-do listu s tim imenom, pa uključi opciju ponovno.",
+        list_name_for(language),
+    )
     return None
-
-
-def _async_rename_entity(hass: HomeAssistant, entity_id: str, wanted: str) -> None:
-    registry = er.async_get(hass)
-    item = registry.async_get(entity_id)
-    if item is None or item.name == wanted:
-        return
-    try:
-        registry.async_update_entity(entity_id, name=wanted)
-    except Exception as err:  # noqa: BLE001
-        _LOGGER.debug("Ime To-do liste nije ažurirano: %s", err)
-
-
-async def _async_create_list(hass: HomeAssistant, wanted: str) -> None:
-    try:
-        await asyncio.wait_for(
-            hass.config_entries.flow.async_init(
-                _LOCAL_TODO,
-                context={"source": "user"},
-                data={_LIST_NAME_KEY: wanted},
-            ),
-            timeout=15,
-        )
-    except TimeoutError:
-        _LOGGER.warning("Lista %s nije stvorena: timeout", wanted)
-    except Exception as err:  # noqa: BLE001
-        _LOGGER.warning("Lista %s nije stvorena: %s", wanted, err)
 
 
 async def async_add_collection_item(
@@ -114,17 +72,17 @@ async def async_add_collection_item(
     due_date: str,
     description: str,
 ) -> bool:
-    payloads = (
-        {"item": summary, "due_date": due_date, "description": description},
-        {"item": summary, "due_date": due_date},
-        {"item": summary},
-    )
     entity_id = await async_ensure_todo_list(hass, language)
     if entity_id is None or not hass.services.has_service("todo", "add_item"):
         _LOGGER.warning("Stavka na To-do listu nije dodana: %s", summary)
         return False
     if await _already_exists(hass, entity_id, summary, due_date):
         return True
+    payloads = (
+        {"item": summary, "due_date": due_date, "description": description},
+        {"item": summary, "due_date": due_date},
+        {"item": summary},
+    )
     for payload in payloads:
         if await _async_call_add(hass, entity_id, payload):
             _LOGGER.info("Dodana stavka na %s: %s", entity_id, summary)
@@ -138,25 +96,14 @@ async def _async_call_add(hass: HomeAssistant, entity_id: str, payload: dict) ->
         await hass.services.async_call(
             "todo",
             "add_item",
-            {"entity_id": entity_id, **payload},
+            payload,
             blocking=True,
             target={"entity_id": entity_id},
         )
         return True
     except Exception as err:  # noqa: BLE001
-        _LOGGER.debug("todo.add_item nije uspio na %s: %s", entity_id, err)
-        try:
-            await hass.services.async_call(
-                "todo",
-                "add_item",
-                payload,
-                blocking=True,
-                target={"entity_id": entity_id},
-            )
-            return True
-        except Exception as inner:  # noqa: BLE001
-            _LOGGER.warning("todo.add_item nije uspio: %s", inner)
-            return False
+        _LOGGER.warning("todo.add_item na %s nije uspio: %s", entity_id, err)
+        return False
 
 
 async def async_collection_completed(
@@ -165,8 +112,7 @@ async def async_collection_completed(
     entity_id = find_todo_entity(hass)
     if entity_id is None:
         return False
-    items = await _list_items(hass, entity_id)
-    for item in items:
+    for item in await _list_items(hass, entity_id):
         if not _matches_collection(item, summary, due_date):
             continue
         if str(item.get("status") or "").lower() == "completed":
@@ -189,7 +135,7 @@ async def _list_items(hass: HomeAssistant, entity_id: str) -> list[dict]:
         response = await hass.services.async_call(
             "todo",
             "get_items",
-            {"entity_id": entity_id},
+            {},
             blocking=True,
             return_response=True,
             target={"entity_id": entity_id},

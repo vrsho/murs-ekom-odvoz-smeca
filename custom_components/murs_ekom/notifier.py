@@ -41,7 +41,6 @@ from .schedule import (
 from .todo_list import (
     async_add_collection_item,
     async_collection_completed,
-    async_ensure_todo_list,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -119,15 +118,15 @@ class MursEkomNotifier:
             return self.hass.async_create_task(coro)
 
     async def async_after_start(self) -> None:
-        if self._todo_enabled():
-            try:
-                await async_ensure_todo_list(self.hass, self.coordinator.language)
-            except Exception:  # noqa: BLE001
-                _LOGGER.exception("To-do lista nije spremna")
         try:
             await self.async_maybe_send(catch_up=True)
         except Exception:  # noqa: BLE001
             _LOGGER.exception("Catch-up obavijest nije uspjela")
+        if self._todo_enabled():
+            try:
+                await self._async_queue_upcoming_todo()
+            except Exception:  # noqa: BLE001
+                _LOGGER.exception("To-do stavka nije dodana")
         try:
             await self.async_maybe_day_remind(catch_up=True)
         except Exception:  # noqa: BLE001
@@ -147,7 +146,7 @@ class MursEkomNotifier:
 
         @callback
         def _fire(_now) -> None:
-            self._create_task(self.async_maybe_send())
+            self.hass.async_create_task(self.async_maybe_send())
 
         self._unsub = async_track_time_change(
             self.hass,
@@ -168,7 +167,7 @@ class MursEkomNotifier:
 
             @callback
             def _remind(_now) -> None:
-                self._create_task(self.async_maybe_day_remind())
+                self.hass.async_create_task(self.async_maybe_day_remind())
 
             self._unsub_remind = async_track_time_change(
                 self.hass,
@@ -320,6 +319,23 @@ class MursEkomNotifier:
             due_date=item.date.isoformat(),
             description=message,
         )
+
+    async def _async_queue_upcoming_todo(self) -> None:
+        _notify_on, todo_on, days_before, _entities = self._options()
+        if not todo_on:
+            return
+        today = dt_util.now().date()
+        target = notify_target_date(today, days_before)
+        item = self.coordinator.collection_on(target)
+        if item is None and self.coordinator.data:
+            item = self.coordinator.data.get("next")
+        if item is None:
+            _LOGGER.info("Nema termina za To-Do stavku")
+            return
+        _title, message, _icon = _payload(
+            self.coordinator, item, days_until(item, today)
+        )
+        await self._async_add_todo(item, message)
 
     async def _async_deliver(
         self,
