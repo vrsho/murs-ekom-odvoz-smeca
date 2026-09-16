@@ -5,7 +5,8 @@ from __future__ import annotations
 import logging
 
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant, callback
+from homeassistant.const import EVENT_HOMEASSISTANT_STARTED
+from homeassistant.core import CoreState, Event, HomeAssistant, callback
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.event import async_track_time_change
 from homeassistant.helpers.storage import Store
@@ -72,6 +73,7 @@ class MursEkomNotifier:
         self.entry = entry
         self.coordinator = coordinator
         self._unsub = None
+        self._unsub_started = None
         self._after_task = None
         self._store = Store(hass, STORAGE_VERSION, f"{STORAGE_KEY}_{entry.entry_id}")
         self._sent: dict[str, str] = {}
@@ -83,14 +85,16 @@ class MursEkomNotifier:
         self._schedule()
 
     def schedule_after_start(self) -> None:
-        create = getattr(self.hass, "async_create_background_task", None)
-        if create:
-            self._after_task = create(
-                self.async_after_start(),
-                name=f"{DOMAIN}_after_start",
-            )
-        else:
+        if self.hass.state is CoreState.running:
             self._after_task = self.hass.async_create_task(self.async_after_start())
+            return
+
+        async def _started(_event: Event) -> None:
+            await self.async_after_start()
+
+        self._unsub_started = self.hass.bus.async_listen_once(
+            EVENT_HOMEASSISTANT_STARTED, _started
+        )
 
     async def async_after_start(self) -> None:
         if self._todo_enabled():
@@ -125,6 +129,9 @@ class MursEkomNotifier:
         )
 
     async def async_stop(self) -> None:
+        if self._unsub_started:
+            self._unsub_started()
+            self._unsub_started = None
         if self._after_task:
             self._after_task.cancel()
             self._after_task = None

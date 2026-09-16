@@ -64,31 +64,30 @@ def find_todo_entity(hass: HomeAssistant) -> str | None:
 
 async def async_ensure_todo_list(hass: HomeAssistant, language: str) -> str | None:
     wanted = list_name_for(language)
-    existing = next(_managed_entries(hass), None)
-    if existing is None:
-        await _async_create_list(hass, wanted)
-    else:
-        await _async_maybe_rename(hass, existing, wanted)
-    await _async_wait_ready(hass)
     entity_id = find_todo_entity(hass)
-    if entity_id is None:
-        _LOGGER.warning("Lista %s je uključena, ali entitet još nije dostupan", wanted)
-    return entity_id
+    if entity_id is None and next(_managed_entries(hass), None) is None:
+        await _async_create_list(hass, wanted)
+        for _ in range(16):
+            entity_id = find_todo_entity(hass)
+            if entity_id:
+                break
+            await asyncio.sleep(0.25)
+    if entity_id:
+        _async_rename_entity(hass, entity_id, wanted)
+        return entity_id
+    _LOGGER.warning("Lista %s je uključena, ali entitet još nije dostupan", wanted)
+    return None
 
 
-async def _async_maybe_rename(hass: HomeAssistant, entry, wanted: str) -> None:
-    current = str(entry.data.get(_LIST_NAME_KEY) or entry.title or "")
-    if current == wanted:
+def _async_rename_entity(hass: HomeAssistant, entity_id: str, wanted: str) -> None:
+    registry = er.async_get(hass)
+    item = registry.async_get(entity_id)
+    if item is None or item.name == wanted:
         return
-    hass.config_entries.async_update_entry(
-        entry,
-        title=wanted,
-        data={**entry.data, _LIST_NAME_KEY: wanted},
-    )
     try:
-        await hass.config_entries.async_reload(entry.entry_id)
+        registry.async_update_entity(entity_id, name=wanted)
     except Exception as err:  # noqa: BLE001
-        _LOGGER.debug("Reload liste %s: %s", wanted, err)
+        _LOGGER.debug("Ime To-do liste nije ažurirano: %s", err)
 
 
 async def _async_create_list(hass: HomeAssistant, wanted: str) -> None:
@@ -102,13 +101,6 @@ async def _async_create_list(hass: HomeAssistant, wanted: str) -> None:
         _LOGGER.warning("Lista %s nije stvorena: %s", wanted, err)
 
 
-async def _async_wait_ready(hass: HomeAssistant) -> None:
-    for _ in range(20):
-        if hass.services.has_service("todo", "add_item") and find_todo_entity(hass):
-            return
-        await asyncio.sleep(0.25)
-
-
 async def async_add_collection_item(
     hass: HomeAssistant,
     *,
@@ -117,35 +109,31 @@ async def async_add_collection_item(
     due_date: str,
     description: str,
 ) -> bool:
-    entity_id = None
     payloads = (
         {"item": summary, "due_date": due_date, "description": description},
         {"item": summary, "due_date": due_date},
         {"item": summary},
     )
-    for attempt in range(6):
-        entity_id = await async_ensure_todo_list(hass, language)
-        if entity_id is None or not hass.services.has_service("todo", "add_item"):
-            await asyncio.sleep(0.5)
-            continue
-        if await _already_exists(hass, entity_id, summary, due_date):
-            return True
-        payload = payloads[min(attempt, len(payloads) - 1)]
+    entity_id = await async_ensure_todo_list(hass, language)
+    if entity_id is None or not hass.services.has_service("todo", "add_item"):
+        _LOGGER.warning("Stavka na To-do listu nije dodana: %s", summary)
+        return False
+    if await _already_exists(hass, entity_id, summary, due_date):
+        return True
+    for payload in payloads:
         if await _async_call_add(hass, entity_id, payload):
             _LOGGER.info("Dodana stavka na %s: %s", entity_id, summary)
             return True
-        await asyncio.sleep(0.5)
     _LOGGER.warning("Stavka na To-do listu nije dodana: %s", summary)
     return False
 
 
 async def _async_call_add(hass: HomeAssistant, entity_id: str, payload: dict) -> bool:
-    data = {"entity_id": entity_id, **payload}
     try:
         await hass.services.async_call(
             "todo",
             "add_item",
-            data,
+            {"entity_id": entity_id, **payload},
             blocking=True,
             target={"entity_id": entity_id},
         )
