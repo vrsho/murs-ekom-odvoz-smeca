@@ -33,6 +33,7 @@ from .const import (
     CONF_PULL_INTERVAL_DAYS,
     CONF_REFRESH_NOW,
     CONF_TODO_ENABLED,
+    CONF_TODO_ENTITY,
     CONF_TODO_REMIND_DAY,
     CONF_TODO_REMIND_TIME,
     DEFAULT_LANGUAGE,
@@ -139,6 +140,10 @@ def _options_schema(
                 CONF_TODO_ENABLED,
                 default=defaults.get(CONF_TODO_ENABLED, DEFAULT_TODO_ENABLED),
             ): BooleanSelector(),
+            vol.Optional(
+                CONF_TODO_ENTITY,
+                description={"suggested_value": defaults.get(CONF_TODO_ENTITY)},
+            ): EntitySelector(EntitySelectorConfig(domain="todo")),
             vol.Required(
                 CONF_TODO_REMIND_DAY,
                 default=defaults.get(CONF_TODO_REMIND_DAY, DEFAULT_TODO_REMIND_DAY),
@@ -152,6 +157,27 @@ def _options_schema(
         }
     )
     return vol.Schema(schema)
+
+
+def _todo_options(user_input: dict[str, Any]) -> dict[str, Any]:
+    return {
+        CONF_TODO_ENABLED: bool(
+            user_input.get(CONF_TODO_ENABLED, DEFAULT_TODO_ENABLED)
+        ),
+        CONF_TODO_ENTITY: user_input.get(CONF_TODO_ENTITY) or None,
+        CONF_TODO_REMIND_DAY: bool(
+            user_input.get(CONF_TODO_REMIND_DAY, DEFAULT_TODO_REMIND_DAY)
+        ),
+        CONF_TODO_REMIND_TIME: clamp_morning_time(
+            user_input.get(CONF_TODO_REMIND_TIME, DEFAULT_TODO_REMIND_TIME)
+        ),
+    }
+
+
+def _todo_errors(user_input: dict[str, Any]) -> dict[str, str]:
+    if user_input.get(CONF_TODO_ENABLED) and not user_input.get(CONF_TODO_ENTITY):
+        return {CONF_TODO_ENTITY: "todo_entity_required"}
+    return {}
 
 
 async def async_load_locations(hass) -> list[dict[str, str]]:
@@ -197,7 +223,10 @@ class MursEkomConfigFlow(ConfigFlow, domain=DOMAIN):
     async def async_step_settings(
         self, user_input: dict[str, Any] | None = None
     ) -> ConfigFlowResult:
+        errors: dict[str, str] = {}
         if user_input is not None:
+            errors = _todo_errors(user_input)
+        if user_input is not None and not errors:
             location = user_input[CONF_LOCATION]
             title = next(
                 (item["name"] for item in self._locations if item["id"] == location),
@@ -218,23 +247,14 @@ class MursEkomConfigFlow(ConfigFlow, domain=DOMAIN):
                     ),
                     CONF_NOTIFY_TIME: user_input[CONF_NOTIFY_TIME],
                     CONF_NOTIFY_ENTITIES: user_input.get(CONF_NOTIFY_ENTITIES, []),
-                    CONF_TODO_ENABLED: bool(
-                        user_input.get(CONF_TODO_ENABLED, DEFAULT_TODO_ENABLED)
-                    ),
-                    CONF_TODO_REMIND_DAY: bool(
-                        user_input.get(CONF_TODO_REMIND_DAY, DEFAULT_TODO_REMIND_DAY)
-                    ),
-                    CONF_TODO_REMIND_TIME: clamp_morning_time(
-                        user_input.get(
-                            CONF_TODO_REMIND_TIME, DEFAULT_TODO_REMIND_TIME
-                        )
-                    ),
+                    **_todo_options(user_input),
                 },
             )
 
         return self.async_show_form(
             step_id="settings",
-            data_schema=_options_schema({}, self._locations),
+            data_schema=_options_schema(user_input or {}, self._locations),
+            errors=errors,
         )
 
 
@@ -249,7 +269,12 @@ class MursEkomOptionsFlow(OptionsFlow):
         if CONF_LOCATION not in current:
             current[CONF_LOCATION] = self.config_entry.data.get(CONF_LOCATION)
 
+        errors: dict[str, str] = {}
         if user_input is not None:
+            errors = _todo_errors(user_input)
+            if errors:
+                current.update(user_input)
+        if user_input is not None and not errors:
             refresh_now = bool(user_input.pop(CONF_REFRESH_NOW, False))
             location = user_input[CONF_LOCATION]
             title = next(
@@ -267,15 +292,7 @@ class MursEkomOptionsFlow(OptionsFlow):
                 CONF_NOTIFY_DAYS_BEFORE: int(user_input[CONF_NOTIFY_DAYS_BEFORE]),
                 CONF_NOTIFY_TIME: user_input[CONF_NOTIFY_TIME],
                 CONF_NOTIFY_ENTITIES: user_input.get(CONF_NOTIFY_ENTITIES, []),
-                CONF_TODO_ENABLED: bool(
-                    user_input.get(CONF_TODO_ENABLED, DEFAULT_TODO_ENABLED)
-                ),
-                CONF_TODO_REMIND_DAY: bool(
-                    user_input.get(CONF_TODO_REMIND_DAY, DEFAULT_TODO_REMIND_DAY)
-                ),
-                CONF_TODO_REMIND_TIME: clamp_morning_time(
-                    user_input.get(CONF_TODO_REMIND_TIME, DEFAULT_TODO_REMIND_TIME)
-                ),
+                **_todo_options(user_input),
             }
             if refresh_now:
                 options["force_fetch_at"] = dt_util.now().isoformat()
@@ -284,4 +301,5 @@ class MursEkomOptionsFlow(OptionsFlow):
         return self.async_show_form(
             step_id="init",
             data_schema=_options_schema(current, locations),
+            errors=errors,
         )

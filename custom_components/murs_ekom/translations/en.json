@@ -18,6 +18,7 @@
           "notify_time": "Notification time",
           "notify_entities": "Notify devices",
           "todo_enabled": "Send to To-Do list",
+          "todo_entity": "To-Do list",
           "todo_remind_day": "Remind again on collection day",
           "todo_remind_time": "Morning reminder (5:00–10:00)"
         },
@@ -28,11 +29,15 @@
           "refresh_now": "Pull the latest calendar immediately when saving.",
           "notify_days_before": "0 = same day, 1 = the day before.",
           "notify_entities": "Companion phone entity, e.g. notify.vanjatest or notify.mobile_app_iphone.",
-          "todo_enabled": "Creates a Waste or Smeće list based on language and adds an item at the same reminder time.",
+          "todo_enabled": "Adds an item to the selected To-Do list at the same reminder time.",
+          "todo_entity": "List that receives the items. Create a new list with the Local To-do integration.",
           "todo_remind_day": "Only with Send to To-Do list. Sends a morning notification if the item is not marked done.",
           "todo_remind_time": "Any time between 5:00 and 10:00, e.g. 5:10 or 6:25."
         }
       }
+    },
+    "error": {
+      "todo_entity_required": "Select a To-Do list or turn off Send to To-Do list."
     },
     "abort": {
       "already_configured": "The integration is already configured.",
@@ -54,6 +59,7 @@
           "notify_time": "Notification time",
           "notify_entities": "Notify devices",
           "todo_enabled": "Send to To-Do list",
+          "todo_entity": "To-Do list",
           "todo_remind_day": "Remind again on collection day",
           "todo_remind_time": "Morning reminder (5:00–10:00)"
         },
@@ -62,11 +68,15 @@
           "language": "System follows Home Assistant language.",
           "refresh_now": "Enable to pull the calendar immediately after save.",
           "notify_entities": "Companion phone entity, e.g. notify.vanjatest.",
-          "todo_enabled": "Creates a Waste or Smeće list based on language and adds an item at the same reminder time.",
+          "todo_enabled": "Adds an item to the selected To-Do list at the same reminder time.",
+          "todo_entity": "List that receives the items. Create a new list with the Local To-do integration.",
           "todo_remind_day": "Only with Send to To-Do list. Sends a morning notification if the item is not marked done.",
           "todo_remind_time": "Any time between 5:00 and 10:00, e.g. 5:10 or 6:25."
         }
       }
+    },
+    "error": {
+      "todo_entity_required": "Select a To-Do list or turn off Send to To-Do list."
     }
   },
   "entity": {

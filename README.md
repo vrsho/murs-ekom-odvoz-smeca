@@ -19,7 +19,7 @@ Prikazuje **kad se što odvozi** i šalje **obavijest s ikonom kante** u satima 
 - binarni senzor **Odvoz danas**
 - **kalendar** u Home Assistantu
 - obavijesti na telefon (Companion app)
-- opcija **Šalji na To-Do listu** (lista **Smeće** / **Waste** prema jeziku)
+- opcija **Šalji na To-Do listu** (na listu koju sam odabereš)
 
 Vrste otpada: miješani komunalni, bio, plastika i papir, metal/tetrapak/staklo, glomazni, granje, božićna drvca.
 
@@ -52,7 +52,7 @@ Vrste otpada: miješani komunalni, bio, plastika i papir, metal/tetrapak/staklo,
    - **Dana prije odvoza:** `1` (dan ranije) ili `0` (na dan odvoza)
    - **Vrijeme:** npr. `18:00:00`
    - **Uređaji:** `notify.mobile_app_tvoj_telefon`
-   - **Šalji na To-Do listu:** stvara listu **Smeće** (HR) ili **Waste** (EN) i dodaje stavku u isto vrijeme kao podsjetnik
+   - **Šalji na To-Do listu** + **To-Do lista:** dodaje stavku na odabranu listu u isto vrijeme kao podsjetnik. Integracija ne stvara listu; novu napravi u [Local To-do](https://www.home-assistant.io/integrations/local_todo/) (npr. „Smeće”), pa je odaberi u postavkama
    - **Podsjeti još jednom na dan odvoza:** ujutro (bilo koje vrijeme 5:00–10:00, npr. 6:25) ako To-Do stavka nije označena kao riješena
 3. **Razmak povlačenja:** `7` dana (jednom tjedno).
 

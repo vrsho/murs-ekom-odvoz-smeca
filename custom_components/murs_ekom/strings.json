@@ -18,6 +18,7 @@
           "notify_time": "Vrijeme obavijesti",
           "notify_entities": "Uređaji za obavijest",
           "todo_enabled": "Šalji na To-Do listu",
+          "todo_entity": "To-Do lista",
           "todo_remind_day": "Podsjeti još jednom na dan odvoza",
           "todo_remind_time": "Jutarnji podsjetnik (5:00–10:00)"
         },
@@ -28,11 +29,15 @@
           "refresh_now": "Odmah povuci najnoviji kalendar pri spremanju.",
           "notify_days_before": "0 = isti dan, 1 = dan ranije.",
           "notify_entities": "Companion entitet mobitela, npr. notify.vanjatest ili notify.mobile_app_iphone.",
-          "todo_enabled": "Stvara listu Smeće ili Waste prema jeziku i dodaje stavku u isto vrijeme kao podsjetnik.",
+          "todo_enabled": "Dodaje stavku na odabranu To-Do listu u isto vrijeme kao podsjetnik.",
+          "todo_entity": "Lista na koju se dodaju stavke. Novu listu napravi u integraciji Local To-do.",
           "todo_remind_day": "Samo uz Šalji na To-Do listu. Šalje obavijest ujutro ako stavka nije označena kao riješena.",
           "todo_remind_time": "Bilo koje vrijeme između 5:00 i 10:00, npr. 5:10 ili 6:25."
         }
       }
+    },
+    "error": {
+      "todo_entity_required": "Odaberi To-Do listu ili isključi Šalji na To-Do listu."
     },
     "abort": {
       "already_configured": "Integracija je već dodana.",
@@ -54,6 +59,7 @@
           "notify_time": "Vrijeme obavijesti",
           "notify_entities": "Uređaji za obavijest",
           "todo_enabled": "Šalji na To-Do listu",
+          "todo_entity": "To-Do lista",
           "todo_remind_day": "Podsjeti još jednom na dan odvoza",
           "todo_remind_time": "Jutarnji podsjetnik (5:00–10:00)"
         },
@@ -62,11 +68,15 @@
           "language": "System prati jezik Home Assistanta.",
           "refresh_now": "Uključi da se kalendar odmah povuče nakon spremanja.",
           "notify_entities": "Companion entitet mobitela, npr. notify.vanjatest.",
-          "todo_enabled": "Stvara listu Smeće ili Waste prema jeziku i dodaje stavku u isto vrijeme kao podsjetnik.",
+          "todo_enabled": "Dodaje stavku na odabranu To-Do listu u isto vrijeme kao podsjetnik.",
+          "todo_entity": "Lista na koju se dodaju stavke. Novu listu napravi u integraciji Local To-do.",
           "todo_remind_day": "Samo uz Šalji na To-Do listu. Šalje obavijest ujutro ako stavka nije označena kao riješena.",
           "todo_remind_time": "Bilo koje vrijeme između 5:00 i 10:00, npr. 5:10 ili 6:25."
         }
       }
+    },
+    "error": {
+      "todo_entity_required": "Odaberi To-Do listu ili isključi Šalji na To-Do listu."
     }
   },
   "entity": {

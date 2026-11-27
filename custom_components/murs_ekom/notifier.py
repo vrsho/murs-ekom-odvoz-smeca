@@ -18,6 +18,7 @@ from .const import (
     CONF_NOTIFY_ENTITIES,
     CONF_NOTIFY_TIME,
     CONF_TODO_ENABLED,
+    CONF_TODO_ENTITY,
     CONF_TODO_REMIND_DAY,
     CONF_TODO_REMIND_TIME,
     DEFAULT_NOTIFY_DAYS_BEFORE,
@@ -199,8 +200,13 @@ class MursEkomNotifier:
     def reload_schedule(self) -> None:
         self._schedule()
 
+    def _todo_entity(self) -> str | None:
+        if not self.entry.options.get(CONF_TODO_ENABLED, DEFAULT_TODO_ENABLED):
+            return None
+        return self.entry.options.get(CONF_TODO_ENTITY) or None
+
     def _todo_enabled(self) -> bool:
-        return bool(self.entry.options.get(CONF_TODO_ENABLED, DEFAULT_TODO_ENABLED))
+        return self._todo_entity() is not None
 
     def _remind_on_day(self) -> bool:
         return self._todo_enabled() and bool(
@@ -210,7 +216,7 @@ class MursEkomNotifier:
     def _options(self) -> tuple[bool, bool, int, list[str]]:
         options = self.entry.options
         notify_on = bool(options.get(CONF_NOTIFY_ENABLED, DEFAULT_NOTIFY_ENABLED))
-        todo_on = bool(options.get(CONF_TODO_ENABLED, DEFAULT_TODO_ENABLED))
+        todo_on = self._todo_enabled()
         days_before = int(
             options.get(CONF_NOTIFY_DAYS_BEFORE, DEFAULT_NOTIFY_DAYS_BEFORE)
         )
@@ -281,7 +287,10 @@ class MursEkomNotifier:
             return False
         summary = self.coordinator.types_label(item.types)
         if await async_collection_completed(
-            self.hass, summary=summary, due_date=item.date.isoformat()
+            self.hass,
+            self._todo_entity(),
+            summary=summary,
+            due_date=item.date.isoformat(),
         ):
             _LOGGER.info("Jutarnji podsjetnik preskočen, To-Do je riješen")
             return False
@@ -323,12 +332,15 @@ class MursEkomNotifier:
     async def _async_add_todo(
         self, item, message: str, summary_prefix: str | None = None
     ) -> bool:
+        entity_id = self._todo_entity()
+        if entity_id is None:
+            return False
         summary = self.coordinator.types_label(item.types)
         if summary_prefix:
             summary = f"{summary_prefix}: {summary}"
         return await async_add_collection_item(
             self.hass,
-            language=self.coordinator.language,
+            entity_id,
             summary=summary,
             due_date=item.date.isoformat(),
             due_datetime=f"{item.date.isoformat()} 06:00:00",
